@@ -1,0 +1,60 @@
+.header {
+    /*
+    background: linear-gradient(90deg, var(--color-background-white),var(--color-header-red));
+    */
+    padding: 1rem 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: var(--color-background-white);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logoContainer{
+    height: 30px;
+    width: 50px;
+  }
+  .logo{
+    height: 30px;
+  }
+  .login-text {
+    font-size: 1rem;
+    color: var(--color-text-black);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    white-space: nowrap;
+    margin-right: 5px;
+  }
+.loginContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.login-button {
+    padding: 0.3rem 0.3rem;
+   
+    background-color: var(--color-background-white);
+    color: var(--color-header-red);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .login-button:hover {
+    background-color: var(--color-gray-light);
+    transform: scale(1.05);
+  }
+.login-button:hover + .login-text,
+.loginContainer:hover .login-text {
+  opacity: 1;
+  visibility: visible;
+}
+  .login-icon{
+    max-height: 20px;
+  }

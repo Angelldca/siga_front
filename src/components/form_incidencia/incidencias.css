@@ -1,0 +1,79 @@
+
+.incident-form {
+    max-width: 80%;   
+    margin: 2rem auto;
+    padding: 2rem;
+ 
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+  }
+  
+  .incident-form h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .row > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Etiquetas */
+  .incident-form label {
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  /* Quitar decoraciones a inputs y textarea */
+  .incident-form input,
+  .incident-form textarea {
+    width: 100%;
+    max-width: 100%;
+    border: none;                  
+    outline: none;                  
+    border-bottom: 2px solid #ccc;
+    background-color: transparent; 
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    transition: border-color 0.2s;
+    color: #333;
+  }
+  
+  .incident-form input:focus,
+  .incident-form textarea:focus {
+    border-color: #D32F2F;
+  }
+  
+  /* Espacio extra debajo del último input/textarea */
+  .incident-form input,
+  .incident-form textarea {
+    margin-bottom: 1rem;
+  }
+  
+  /* Botón de envío */
+  .incident-form button {
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #D32F2F;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover en botón */
+  .incident-form button:hover {
+    background-color: #B71C1C;
+  }

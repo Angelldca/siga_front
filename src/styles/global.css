@@ -1,0 +1,79 @@
+@import '@fontsource/inter/index.css';
+@import './variable.css';
+@import './reset.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* Botón base */
+button {
+    font-family: inherit;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border 0.2s ease;
+  }
+  
+  /* Botón primario */
+  .btn-primary {
+    background-color: var(--color-primary);   /* #0E4E9F */
+    color: white;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-secondary); /* #2563EB */
+  }
+  
+  /* Botón secundario */
+  .btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+  .btn-secondary:hover {
+    background-color: #F0F8FF;
+  }
+  
+  /* Botón de peligro */
+  .btn-danger {
+    background-color: var(--color-error); /* #EF4444 */
+    color: white;
+  }
+  .btn-danger:hover {
+    background-color: #DC2626;
+  }
+
+
+  .btn-small {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .btn-large {
+    padding: 16px 32px;
+    font-size: 18px;
+  }

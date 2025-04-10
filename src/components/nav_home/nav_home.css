@@ -1,0 +1,40 @@
+
+
+
+.nav_home_container{
+    width: 95%;
+    margin: auto;
+    margin-top: 2rem;
+    border-bottom: 1px solid var(--color-gray-medium);
+}
+
+.navegation_home_ul{
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    margin: 0px;
+    padding: 0rem 1rem;
+}
+
+li{
+    margin-left: 20px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+li::marker {
+    content: "";
+  }
+a{
+    text-decoration: none;
+    color: #636363;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+li:hover{
+   
+    border-bottom: 1px solid var(--color-header-red);
+}
+li:hover a {
+    color: var(--color-header-red);
+  }
