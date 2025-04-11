@@ -2,16 +2,23 @@ import './login.css'
 import logo from '../../assets/logo-without-letter.png' 
 import { useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useLogin();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login({ email, password });
+    const token = await login({ email, password });
+    if (token) {
+      navigate("/dashboard");
+    } else {
+      console.log("Error: ", token)//TODO: mejorar alerta
+    }
   };
 
     return (
@@ -35,7 +42,7 @@ const Login = () => {
           />
           <button type="submit" className='.btn-primary'>Iniciar sesión</button>
         </form>
-        <p>Olvidaste la contraseña?</p>
+        <p>¿Olvidaste la contraseña?</p>
       </div>
     )
 }

@@ -11,7 +11,6 @@ export function useLogin() {
 
     try {
       const data = await loginService(credentials);
-      localStorage.setItem('token', data.token);
       return data;
     } catch (err) {
       setError(err || 'Error inesperado');
