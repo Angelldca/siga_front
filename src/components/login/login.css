@@ -12,7 +12,7 @@
   min-height: 400px;
 }
 
-.login-card p{
+.login-card-p{
   margin-top: 30px;
   color: var(--color-text-dark);
 }
@@ -42,7 +42,7 @@
   outline: none;
 }
 
-.login-card button {
+.btn-submit  {
   width: 100%;
   padding: 12px;
   font-size: 16px;
@@ -54,7 +54,7 @@
   transition: background-color 0.2s ease;
 }
 
-.login-card button:hover {
+.btn-submit:hover {
   background-color: var(--color-secondary);
 }
 

@@ -1,29 +1,45 @@
 import './login.css'
-import logo from '../../assets/logo-without-letter.png' 
+import logo from '../../assets/logo-without-letter.png'
 import { useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
-
+import Loading from '../loading/loading';
+import Alert from '../alert/alert';
 
 const Login = () => {
   const [email, setEmail] = useState('');
+  const [alert, setAlert] = useState(null);
   const [password, setPassword] = useState('');
-  const { login } = useLogin();
+  const { login, loading } = useLogin();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await login({ email, password });
-    if (token) {
+    const result = await login({ email, password });
+    if (result?.token) {
       navigate("/dashboard");
     } else {
-      console.log("Error: ", token)//TODO: mejorar alerta
+      const errorMessage = result?.error?.message || 'Error al iniciar sesión';
+      setAlert({ type: 'error', message: errorMessage });
     }
   };
 
-    return (
-        <div className="login-card">
-        <img src={logo} alt="SIGA" className='img-logo'/>
+  return (
+    <>
+      {loading && <Loading />}
+      
+      <div className="login-card">
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert(null)
+          
+          }
+       
+        />
+      )}
+        <img src={logo} alt="SIGA" className='img-logo' />
         <h1>Bienvenido al sistema</h1>
         <form onSubmit={handleSubmit}>
           <input
@@ -40,11 +56,12 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className='.btn-primary'>Iniciar sesión</button>
+          <button type="submit" className='btn-primary btn-submit'>Iniciar sesión</button>
         </form>
-        <p>¿Olvidaste la contraseña?</p>
+        <p className='login-card-p'>¿Olvidaste la contraseña?</p>
       </div>
-    )
+    </>
+  )
 }
 
 
