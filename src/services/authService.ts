@@ -36,7 +36,6 @@ export async function getUserPermisionBusiness(id: string, accessToken: string) 
     sortBy: "createdAt",
     sortType: "ASC"
   };
-  console.log(payload)
   const response = await fetch(`${urlBack}/api/user-permission-business/search`, {
     method: "POST",
     headers: {
@@ -48,7 +47,6 @@ export async function getUserPermisionBusiness(id: string, accessToken: string) 
   });
  
   const result = await response.json();
-  console.log(result)
 
   if (!response.ok || !result.data?.length) {
     throw new Error("No se pudo obtener la información del usuario");

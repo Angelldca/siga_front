@@ -12,11 +12,21 @@ interface JwtPayload {
   exp: number;
 }
 
+
+interface Empresa {
+  address: string;
+  id:string;
+  logo:string;
+  nombre:string;
+}
 interface User {
   id: string;
   email: string;
   role: string;
   authorities: string[];
+  username: string;
+  image: string;
+  empresa: Empresa;
   [key: string]: any;
 }
 
@@ -30,6 +40,7 @@ interface AuthContextType {
   setToken: (token: string | null) => void;
   user: User | null;
   login: (credentials: Credentials) => Promise<{ success?: Boolean; error?: string | undefined }>;
+  logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -48,7 +59,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           method: "POST",
           credentials: "include" // envía cookie httpOnly
         });
-        console.log(res)
   
         const data = await res.json();
   
@@ -62,12 +72,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   
         const decoded: JwtPayload = jwtDecode(accessToken);
         const userData = await getUserPermisionBusiness(decoded.id, accessToken);
-  
         setUser({
           id: decoded.id,
           email: decoded.sub,
           role: decoded.type,
           authorities: decoded.authorities,
+          username: userData.user.username,
+          image: userData.user.image,
+          empresa: userData.empresa,
           ...userData
         });
       } catch (err) {
@@ -89,12 +101,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setToken(accessToken);
       const decoded: JwtPayload = jwtDecode(accessToken);
       const userData = await getUserPermisionBusiness(decoded.id,accessToken);
-      console.log(userData)
       setUser({
         id: decoded.id,
         email: decoded.sub,
         role: decoded.type,
         authorities: decoded.authorities,
+        username: userData.user.username,
+        image: userData.user.image,
+        empresa: userData.empresa,
         ...userData
       });
       return { success: true };
@@ -103,8 +117,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const logout = async () => {
+    setToken(null);
+    setUser(null);
+  
+    await fetch(`${urlBack}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ token, setToken, user, login }}>
+    <AuthContext.Provider value={{ token, setToken, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

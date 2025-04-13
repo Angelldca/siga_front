@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
-  const { login } = useAuth();
+  const { login,user } = useAuth();
 
   const handleLogin = async (credentials: { email: string; password: string }) => {
     setLoading(true);
@@ -20,5 +20,5 @@ export function useLogin() {
     return result;
   };
 
-  return { login: handleLogin, loading, error };
+  return { login: handleLogin, loading, error, user };
 }
