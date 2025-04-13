@@ -1,25 +1,27 @@
 import './login.css'
 import logo from '../../assets/logo-without-letter.png'
-import { useState } from 'react';
+import {useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../loading/loading';
 import Alert from '../alert/alert';
 
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [alert, setAlert] = useState(null);
   const [password, setPassword] = useState('');
+
   const { login, loading } = useLogin();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await login({ email, password });
-    if (result?.token) {
+    if (result?.success) {
       navigate("/dashboard");
     } else {
-      const errorMessage = result?.error?.message || 'Error al iniciar sesión';
+      const errorMessage = result.error || 'Error al iniciar sesión';
       setAlert({ type: 'error', message: errorMessage });
     }
   };
