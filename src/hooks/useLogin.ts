@@ -1,25 +1,24 @@
 import { useState } from 'react';
-import { login as loginService } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const { login } = useAuth();
 
-  const login = async (credentials) => {
+  const handleLogin = async (credentials: { email: string; password: string }) => {
     setLoading(true);
-    setError('');
-
-    try {
-      const data = await loginService(credentials);
-      return data;
-    } catch (err) {
-      setError(err || 'Error inesperado');
-      console.log(JSON.stringify(err))
-      return null;
-    } finally {
-      setLoading(false);
+    setError({});
+  
+    const result = await login(credentials);
+  
+    if (result.error) {
+      setError({ message: result.error });
     }
+  
+    setLoading(false);
+    return result;
   };
 
-  return { login, loading, error };
+  return { login: handleLogin, loading, error };
 }
