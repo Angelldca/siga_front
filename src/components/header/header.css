@@ -1,39 +1,50 @@
 .header {
-    /*
-    background: linear-gradient(90deg, var(--color-background-white),var(--color-header-red));
-    */
-    padding: 1rem 1rem;
+    margin-top: 1rem;
+    padding: 5px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    color: var(--color-background-white);
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    color: var(--color-text-dark);
   }
   
   .container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0rem 1rem;
   }
   .logoContainer{
-    height: 30px;
-    width: 50px;
+   width: 215px;
   }
   .logo{
-    height: 30px;
+    height: 55px;
   }
-  .login-text {
-    font-size: 1rem;
-    color: var(--color-text-black);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    white-space: nowrap;
-    margin-right: 5px;
+  
+.login-text {
+  font-size: 1rem;
+  color: var(--color-gray-light);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  white-space: nowrap;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 100%;       /* justo debajo del botón */
+  right: 0%;      /* hacia la derecha del botón */
+  background: var(--color-error);
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+    
   }
 .loginContainer{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    min-width: 300px;
 }
 .login-button {
     padding: 0.3rem 0.3rem;
@@ -50,11 +61,41 @@
     background-color: var(--color-gray-light);
     transform: scale(1.05);
   }
-.login-button:hover + .login-text,
-.loginContainer:hover .login-text {
+.close-section:hover .login-text {
   opacity: 1;
   visibility: visible;
 }
   .login-icon{
     max-height: 20px;
   }
+
+  .close-section{
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .user-profile{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .img-user-profile{
+    width: 40px;             /* o el tamaño que desees */
+    height: 40px;
+    object-fit: cover;       /* para mantener la proporción */
+    border-radius: 50%;      /* esto la hace redonda */
+    border: 2px solid var(--color-primary); /* opcional */
+  }
+
+.icon-profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-gray-light); /* opcional */
+  padding: 2px;
+  margin-left: 6px;
+}
