@@ -1,9 +1,11 @@
 .dashboard{
     padding: 1rem 1rem;
+    min-height: 100vh;
     
 }
 
 .dashboard-container{
     background-color:var(--color-gray-light);
     border-radius: var(--border-radius) var(--border-radius) 0px 0px  ;
+    height: 100%;
 }

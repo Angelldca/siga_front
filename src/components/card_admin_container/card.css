@@ -1,21 +1,28 @@
 .card_container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4rem;
-}
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(
+        400px,
+        1fr
+      )
+    );
+    gap: 1rem;
+  }
 
 .img_card{
     width: 100px;
 }
 
 .card{
-    max-width: 300px;
+    max-width: 600px;
     max-height: 300px;
-    width: 200px;
+    width: 400px;
     height: 200px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px #0000001a;
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: var(--color-gray-light); /*gray-light*/
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,6 +37,6 @@
 }
 
 .card:hover{
-    transform: scale(1.3);
+    transform: scale(1.1);
     cursor: pointer;
 }
