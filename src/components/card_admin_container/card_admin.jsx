@@ -12,10 +12,13 @@ const CardAdmin = () => {
     return (
         <div className="card_container">
             <Can module="ADMINISTRACION" permission="GESTION-EVENTO">
-                <div className="card">
-                    <img src={comedor} className="img_card" />
-                    <p>Eventos</p>
-                </div>
+                <Link className='' to="eventos">
+                    <div className="card">
+                        <img src={comedor} className="img_card" />
+                        <p>Eventos</p>
+
+                    </div>
+                </Link>
             </Can>
             <Can module="ADMINISTRACION" permission="GESTION-AREA">
                 <div className="card">
