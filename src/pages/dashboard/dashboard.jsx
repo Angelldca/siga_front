@@ -1,4 +1,4 @@
-import Container from "../../components/container/container";
+import { BrowserRouter, Route,Navigate, useLocation, Outlet } from "react-router-dom";
 import Header from "../../components/header/header";
 import InfoCard from "../../components/info-card/info-card";
 import NavegationHome from "../../components/nav_home/nave_home";
@@ -7,18 +7,23 @@ import './dashboard.css'
 
 
 const Dashboard = () => {
-    return (
-      <div className="dashboard">
-        <div className="dashboard-container">
-          <Header/>
-          <NavegationHome/>
-          <InfoCard/>
-          {/*<Container/>*/}
-          <Admin/>
-
-        </div>
+  const location = useLocation();
+  const isRoot = location.pathname === "/dashboard";
+  return (
+    <div className="dashboard">
+      <div className="dashboard-container">
+        <Header/>
+        {isRoot && (
+          <>
+            <NavegationHome />
+            <InfoCard />
+            <Admin />
+          </>
+        )}
+        <Outlet />
       </div>
-    );
-  };
-  
-  export default Dashboard;
+    </div>
+  );
+};
+
+export default Dashboard;
