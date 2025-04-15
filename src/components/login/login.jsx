@@ -1,6 +1,6 @@
 import './login.css'
 import logo from '../../assets/logo-without-letter.png'
-import {useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLogin } from '../../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../loading/loading';
@@ -11,14 +11,18 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [alert, setAlert] = useState(null);
   const [password, setPassword] = useState('');
-  const { login, loading, user } = useLogin();
+  const { login, loading, user  } = useLogin();
   const navigate = useNavigate();
 
+
+  
   useEffect(() => {
-    if (user && location.pathname === "/login") {
+    if (user) {
       navigate("/dashboard");
     }
   }, [user]);
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

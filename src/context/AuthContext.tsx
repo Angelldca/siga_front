@@ -41,6 +41,7 @@ interface AuthContextType {
   user: User | null;
   login: (credentials: Credentials) => Promise<{ success?: Boolean; error?: string | undefined }>;
   logout: () => Promise<void>;
+  loadingSession :Boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,6 +53,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [loadingSession, setLoadingSession] = useState(true);
   useEffect(() => {
     const restoreSession = async () => {
       try {
@@ -84,6 +86,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
       } catch (err) {
         console.error("Error restaurando la sesión:", err);
+      }finally {
+        setLoadingSession(false);
       }
     };
   
@@ -128,7 +132,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, setToken, user, login, logout }}>
+    <AuthContext.Provider value={{ token, setToken, user, login, logout,loadingSession  }}>
       {children}
     </AuthContext.Provider>
   );
