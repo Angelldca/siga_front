@@ -17,8 +17,7 @@
 }
 .form-container{
     display: flex;
-    align-items: center;
-    padding: 1rem;
+    gap: 1rem;
     border: 1px solid var(--color-gray);
     box-shadow: var(--box-shadow);
     transition: opacity 0.3s ease;
@@ -35,13 +34,29 @@
     border: none;
     box-shadow: none;
 }
-.filtro{
+.criteria-search-container{
     display: flex;
     align-items: center;
 }
-
+.filtro{
+    display: grid;
+    max-width: 90%;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1rem;
+    margin: 14px;
+    align-items: end;
+}
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: center;
+  }
 .criteria-filter{
-    margin-right: 10px;
+    margin: 10px;
+}
+.search-filter{
+    margin: 10px;
 }
 
 .label-filter{

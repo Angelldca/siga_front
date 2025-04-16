@@ -1,9 +1,12 @@
 
 import {urlBack} from '../final'
 
+interface requestLogin {
+  email: string;
+  password: string;
+}
 
-
-export async function login({ email, password }) {
+export async function login({ email, password }: requestLogin) {
     const response = await fetch( `${urlBack}/auth/login`, {
       method: 'POST',
       headers: {
