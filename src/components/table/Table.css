@@ -48,4 +48,31 @@ td {
     border-color: #4f46e5;
   }
   
- 
+ .success-p{
+    color: var(--color-gray-light);
+    background-color: var(--color-success);
+    border-radius: var(--border-radius);
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    font-weight: 500;
+
+ }
+
+ .error-p{
+    color: var(--color-gray-light);
+    background-color: var(--color-error);
+    border-radius: var(--border-radius);
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    font-weight: 500;
+ }

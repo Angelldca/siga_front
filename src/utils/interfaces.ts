@@ -1,5 +1,13 @@
 
 
+export interface PaginatedFilter {
+  query: string;
+  pageSize: number;
+  page: number;
+  sortBy: string;
+  sortType: string;
+}
+
 export interface DataFilter {
   filter:CriteriaFilter[] | null;
   query: string;

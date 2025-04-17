@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { CriteriaFilter, DataFilter } from "../utils/interfaces";
+import { CriteriaFilter, DataFilter, PaginatedFilter } from "../utils/interfaces";
 import { searchEvent } from "../services/event.service";
 
 
@@ -18,27 +18,31 @@ export function useDataTable() {
          sortBy: "createdAt",
          sortType: "DES",
      });
-    const handleFilter = (values: Record<string, string>) => {
+    const handleFilter = (values: Record<string, string>, 
+        operator?:string,
+        logicalOperation?:string,
+        paginatedFilter?:PaginatedFilter
+    ) => {
         const filterValues: CriteriaFilter[] = Object.entries(values).map(([key, value]) => {
             return {
                 key: key,
-                operator: "LIKE",
+                operator: operator || "LIKE",
                 value: value,
-                logicalOperation: "AND"
+                logicalOperation: logicalOperation || "AND"
             }
         })
         setData(
             {
                 filter: filterValues.length > 0 ? filterValues : [],
-                query: "",
-                pageSize: 10,
-                page: 0,
-                sortBy: "createdAt",
-                sortType: "DES",
+                query: paginatedFilter?.query ||"",
+                pageSize: paginatedFilter?.pageSize ||10,
+                page: paginatedFilter?.page || 0,
+                sortBy: paginatedFilter?.sortBy || "createdAt",
+                sortType: paginatedFilter?.sortType || "DES",
             })
     }
       useEffect(() => {
-            if(loadingSession && !data) return;
+            if(loadingSession) return;
             setLoading(true);
             searchEvent(data, token||"")
             .then((res) => {
