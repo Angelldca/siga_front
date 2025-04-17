@@ -7,20 +7,37 @@ import des from '../../assets/des.png'
 import { DataRow, ThData } from '../../utils/interfaces'
 
 
+
 interface Props {
     th_element: ThData;
     children?: React.ReactNode;
-    data?: DataRow[];
+    data: DataRow[];
+    selectedIds: Set<number | string>;
+    onSelectAll: () => void;
+    onSelectOne: (id: number | string) => void;
 }
 
 
-const Table = ({ th_element,data, children }: Props) => {
+const Table = ({ 
+  th_element,
+  data, 
+  children, 
+  selectedIds,
+  onSelectAll,
+  onSelectOne }: Props) => {
+    const allSelected = (data?.length > 0 && selectedIds.size === data?.length );
+
+    if (!data || data.length === 0) {
+      return (
+        <div className="no-data">
+          <p>No hay datos disponibles</p>
+        </div>
+      );
+    }
     return (
         <div className="table-container">
             <table className='table'>
             <thead>
-
-        
                 <tr>
                     {
                         th_element.th.map((th, index) => (
@@ -28,7 +45,13 @@ const Table = ({ th_element,data, children }: Props) => {
                                 <div className='th-container'>
                                     {
                                         th.type === "Check" ?
-                                            <input type="checkbox" name='select_all' className='check-input'/> 
+                                            <input 
+                                            type="checkbox" 
+                                            name='select_all' 
+                                            className='check-input'
+                                            checked={allSelected}
+                                            onChange={onSelectAll}
+                                            /> 
                                             :
                                             <>
                                                 <div className='th-sort'>
@@ -46,18 +69,23 @@ const Table = ({ th_element,data, children }: Props) => {
                 </tr>
                 </thead>
                 <tbody>
-          {data?.map((row, rowIndex) => (
+          {
+          
+          data?.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {th_element.th.map((th, cellIndex) => (
                 <td key={cellIndex}>
                   {th.type === "Check" ? (
                     <input
                       type="checkbox"
-                      checked={!!row[th.key]}
-                      onChange={() => null}
+                      className='check-input'
+                      checked={selectedIds.has(row.id)}
+                      onChange={() => onSelectOne(row.id)}
                     />
                   ) : th.type === "Boolean"? (
-                    row[th.key] === true ? <p>Si</p>:<p>No</p>
+                    row[th.key] === true ? 
+                    <p className='success-p'>Si</p>
+                    :<p className='error-p'>No</p>
                   ):th.type === "Action"? (
                      children
                   ):(

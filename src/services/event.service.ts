@@ -19,9 +19,8 @@ export async function searchEvent(filter: DataFilter, accessToken: string) {
  
   const result = await response.json();
 
-  if (!response.ok || !result.data?.length) {
+  if (!response.ok) {
     throw new Error("No se pudo obtener la información");
   }
-
   return result;
 }
