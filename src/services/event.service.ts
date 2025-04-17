@@ -23,5 +23,5 @@ export async function searchEvent(filter: DataFilter, accessToken: string) {
     throw new Error("No se pudo obtener la información");
   }
 
-  return result.data[0];
+  return result;
 }

@@ -1,63 +1,78 @@
-import React, { useEffect, useState } from "react";
+
 import Filter from "../../components/filter/filter";
 import "./Event.css"
-import { CriteriaFilter, DataFilter } from "../../utils/interfaces";
-import { searchEvent } from "../../services/event.service";
-import { useAuth } from "../../context/AuthContext";
 
+import { useDataTable } from "../../hooks/useData";
+import Table from "../../components/table/table";
+import { DataRow, ThData } from "../../utils/interfaces";
+import { useEffect, useState } from "react";
+
+
+const filtro = {
+    criterio: [
+        {
+            name: "criterio_1",
+            values: ["Nombre"]
+        }
+    ]
+}
+
+const th_element = {
+    th: [
+        {
+            value: "",
+            type: "Check",
+            key: "check"
+        },{
+            value: "Nombre",
+            type: "Text",key: "nombre"
+        },
+        {
+            value: "Fecha Inicio",
+            type: "Text",key: "fechaInicio"
+        },
+        {
+            value: "Fecha Fin",
+            type: "Text",key: "fechaFin"
+        },
+        {
+            value: "Hora Inicio",
+            type: "Text", key: "horaInicio"
+        },
+        {
+            value: "Hora Fin",
+            type: "Text", key: "horaFin"
+        },
+        {
+            value: "Activo",
+            type: "Boolean",key: "activo"
+        },
+        {
+            value: "Ilimitado",
+            type: "Boolean",key: "ilimitado"
+        }
+    ]
+}as ThData;
 
 const GestionEventos = () => {
-    const {token, user,loadingSession } = useAuth();
-    const [data, setData] = useState<DataFilter>({
-        filter: [],
-        query: "",
-        pageSize: 10,
-        page: 0,
-        sortBy: "createdAt",
-        sortType: "DES",
-    });
-    const filtro = {
-        criterio: [
-            {
-                name: "criterio_1",
-                values: ["Nombre"]
-            }
-        ]
-    }
-    const handleFilter = (values: Record<string, string>) => {
-        const filterValues: CriteriaFilter[] = Object.entries(values).map(([key, value]) => {
-            return {
-                key: key,
-                operator: "EQUALS",
-                value: value,
-                logicalOperation: "AND"
-            }
-        })
-        setData(
-            {
-                filter: filterValues.length > 0 ? filterValues : [],
-                query: "",
-                pageSize: 10,
-                page: 0,
-                sortBy: "createdAt",
-                sortType: "DES",
-            })
-    }
+  const { result,error,loading,handleFilter} = useDataTable();
+  const [data, setData] = useState<DataRow[]>();
 
-    useEffect(() => {
-        if(loadingSession && !data) return;
-        searchEvent(data, token||"")
-        .then((res) => {
-            console.log(res.data)
-        }).catch((err) => {
-            console.log(err)
-        })
-    },[data])
-
+  useEffect(() => {
+    if (loading) return;
+    console.log(result)
+    setData(result?.data);
+  }, [loading]);
     return (
         <div className="event-container">
-            <h3>Eventos</h3>
+            <div>
+                <h3>Eventos</h3>
+                <span>Edirar</span>
+                <span>Eliminar</span>
+                <span>Nuevo</span>
+            </div>
             <Filter filtros={filtro} onSubmit={handleFilter}/>
+            <Table th_element={th_element} data={data}/>
         </div>
     )
 }
