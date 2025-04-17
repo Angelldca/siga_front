@@ -22,3 +22,22 @@ export interface FilterType {
         values: string[];
       }[];
 }
+
+
+export interface ThData {
+    th: Th[]
+}
+
+export interface Th {
+   value: string | Boolean;
+   type: ThType;
+   key: string;
+}
+
+export enum ThType {
+  Check   = "Check",
+  Text    = "Text",
+  Boolean = "Boolean",
+  Action  = "Action"
+}
+export type DataRow = Record<string, any>;

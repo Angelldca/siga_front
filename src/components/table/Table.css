@@ -1,0 +1,51 @@
+
+
+.table-container{
+    margin-top: 10px;
+   
+}
+.table{
+    width: 100%;
+    border-collapse: collapse;
+   
+}
+
+tr, td, th{
+    border: 2px solid var(--color-gray);
+    padding: 0rem 1rem;
+}
+
+.th-container{
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-purple);
+    min-height: 40px;
+   
+}
+
+.th-sort{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    
+}
+td {
+    color: var(--color-text-dark);
+}
+.check-input {
+    width: 1.5rem;
+    border: 2px solid #666;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  
+  .check-input:checked {
+    background-color: var(--color-purple);
+    border-color: #4f46e5;
+  }
+  
+ 
