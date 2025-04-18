@@ -3,7 +3,19 @@ import { useAuth } from "../context/AuthContext";
 import { CriteriaFilter, DataFilter, PaginatedFilter } from "../utils/interfaces";
 import { searchEvent } from "../services/event.service";
 
-
+export type HandleFilterParams =
+  | {
+     
+      values: Record<string, string>;
+      operator?: string;
+      logicalOperation?: string;
+      paginatedFilter?: PaginatedFilter;
+    }
+  | {
+    
+      filterValues: CriteriaFilter[];
+      paginatedFilter?: PaginatedFilter;
+    };
 
 export function useDataTable() {
     const {token,loadingSession } = useAuth();
@@ -13,34 +25,37 @@ export function useDataTable() {
      const [data, setData] = useState<DataFilter>({
          filter: [],
          query: "",
-         pageSize: 10,
+         pageSize: 1000,
          page: 0,
          sortBy: "createdAt",
          sortType: "DES",
      });
-    const handleFilter = (values: Record<string, string>, 
-        operator?:string,
-        logicalOperation?:string,
-        paginatedFilter?:PaginatedFilter
-    ) => {
-        const filterValues: CriteriaFilter[] = Object.entries(values).map(([key, value]) => {
-            return {
-                key: key,
-                operator: operator || "LIKE",
-                value: value,
-                logicalOperation: logicalOperation || "AND"
-            }
-        })
-        setData(
-            {
-                filter: filterValues.length > 0 ? filterValues : [],
-                query: paginatedFilter?.query ||"",
-                pageSize: paginatedFilter?.pageSize ||10,
-                page: paginatedFilter?.page || 0,
-                sortBy: paginatedFilter?.sortBy || "createdAt",
-                sortType: paginatedFilter?.sortType || "DES",
-            })
-    }
+     const handleFilter = (params: HandleFilterParams) => {
+        let filterValues: CriteriaFilter[];
+      
+        if ("filterValues" in params) {
+          filterValues = params.filterValues;
+        } else {
+          const { values, operator = "LIKE", logicalOperation = "AND" } = params;
+          filterValues = Object.entries(values).map(([key, value]) => ({
+            key,
+            operator,
+            value,
+            logicalOperation,
+          }));
+        }
+      
+        const pf = params.paginatedFilter;
+      
+        setData({
+          filter: filterValues,
+          query: pf?.query ?? "",
+          pageSize: pf?.pageSize ?? 10,
+          page: pf?.page ?? 0,
+          sortBy: pf?.sortBy ?? "createdAt",
+          sortType: pf?.sortType ?? "DES",
+        });
+      };
       useEffect(() => {
             if(loadingSession) return;
             setLoading(true);
@@ -50,7 +65,7 @@ export function useDataTable() {
             }).catch((err) => {
                 setError(err)
             }).finally(() => {
-                setLoading(false)
+                setLoading(false);
             })
         },[data])
   

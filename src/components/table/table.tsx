@@ -4,7 +4,9 @@ import sort from '../../assets/sort.png'
 import filter_fill from '../../assets/filter_fill.png'
 import asc from '../../assets/asc.png'
 import des from '../../assets/des.png'
-import { DataRow, ThData } from '../../utils/interfaces'
+import { DataFilter, DataRow, SortConfig, ThData } from '../../utils/interfaces'
+import { useState } from 'react'
+
 
 
 
@@ -12,20 +14,44 @@ interface Props {
     th_element: ThData;
     children?: React.ReactNode;
     data: DataRow[];
+  
     selectedIds: Set<number | string>;
     onSelectAll: () => void;
     onSelectOne: (id: number | string) => void;
+    sortConfig: SortConfig;      // viene del padre
+    onSortChange: (key: string|null, order: "ASC"|"DES"|null) => void;
 }
 
 
 const Table = ({ 
-  th_element,
-  data, 
-  children, 
-  selectedIds,
-  onSelectAll,
-  onSelectOne }: Props) => {
+  th_element,data,children, selectedIds,
+   onSelectAll,onSelectOne,onSortChange ,
+   sortConfig,
+  }: Props) => {
     const allSelected = (data?.length > 0 && selectedIds.size === data?.length );
+    //const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
+    
+    
+    const handleSort = (key: string) => {
+      let nextOrder: SortConfig["order"];
+      if (sortConfig.key !== key) nextOrder = "ASC";
+      else
+        nextOrder =
+          sortConfig.order === "ASC" ? "DES" :
+          sortConfig.order === "DES" ? null : "ASC";
+  
+      onSortChange(nextOrder ? key : null, nextOrder);
+    };
+  
+    const getIcon = (key: string) => {
+      if (sortConfig.key !== key || sortConfig.order === null) return sort;
+      return sortConfig.order === "ASC" ? asc : des;
+    };
+
+   
+
+
+
 
     if (!data || data.length === 0) {
       return (
@@ -56,7 +82,12 @@ const Table = ({
                                             <>
                                                 <div className='th-sort'>
                                                     <p>{th.value+""}</p>
-                                                    <img src={sort} />
+                                                    <img 
+                                                     src={getIcon(th.key)}
+                                                     alt="sort"
+                                                     className="sort-img"
+                                                     onClick={() => handleSort(th.key)}
+                                                    />
                                                 </div>
                                                 <img src={filter} />
                                             </>
