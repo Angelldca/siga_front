@@ -2,6 +2,9 @@
 
 .table-container{
     margin-top: 10px;
+    max-height: 400px;       
+    overflow-y: auto; 
+    border: 1px solid #ccc;
    
 }
 .table{
@@ -9,7 +12,12 @@
     border-collapse: collapse;
    
 }
-
+.table thead th {
+    position: sticky;  
+    top: 0;           
+    background: white;
+    z-index: 1;
+  }
 tr, td, th{
     border: 2px solid var(--color-gray);
     padding: 0rem 1rem;
