@@ -9,3 +9,10 @@ h3{
 .event-container{
     padding: 1rem 1rem;
 }
+
+.table-container-event{
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 400px;
+}

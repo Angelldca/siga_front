@@ -26,6 +26,12 @@ const Filter = ({ filtros, onSubmit }: FilterProps) => {
     onSubmit(getFilterValues());
   };
 
+  const handleClean = (e: React.FormEvent)=>{
+    e.preventDefault();
+    clearFilter();
+    onSubmit({});
+  }
+
   return (
     <div className="filter-container">
       <header className="filter-header" onClick={() => setHidden(h => !h)}>
@@ -75,7 +81,7 @@ const Filter = ({ filtros, onSubmit }: FilterProps) => {
             <button className="btn-filter" type="submit">
               <img src={search} alt="search" />
             </button>
-            <button className="clean" type="button" onClick={clearFilter}>
+            <button className="clean" type="button" onClick={handleClean}>
               <img src={clean} alt="clear" />
             </button>
           </div>
