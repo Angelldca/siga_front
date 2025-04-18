@@ -4,74 +4,83 @@ import "./Event.css"
 
 import { useDataTable } from "../../hooks/useData";
 import Table from "../../components/table/table";
-import { DataRow, ThData } from "../../utils/interfaces";
+import { DataRow, FilterType, PaginatedFilter, SortConfig, ThData } from "../../utils/interfaces";
 import { useEffect, useState } from "react";
 import Loading from "../../components/loading/loading";
+import { useCheck } from "../../hooks/useCheck";
 
 
-
-const GestionEventos = () => {
-  const { result,error,loading,handleFilter} = useDataTable();
-  const [data, setData] = useState<DataRow[]>([]);
-  const [selectedIds, setSelectedIds] = useState<Set<number| string>>(new Set());
-
-  const handleSelectOne = (id: number | string) => {
-    setSelectedIds(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-  const handleSelectAll = () => {
-    setSelectedIds(prev => {
-      if (prev.size === data?.length) {
-        return new Set();        
-      } else {
-        return new Set(data?.map(r => r.id));
-      }
-    });
-  };
-  useEffect(() => {
-    if (loading) return;
-    setData(result.data);
-  }, [loading,result]);
+function GestionEventos() {
+    const { result, loading, handleFilter } = useDataTable();
+    const [data, setData] = useState<DataRow[]>([]);
+    const { selectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
+  
+    // Elevamos sortConfig al padre
+    const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
+  
+   
+  
+    useEffect(() => {
+      if (!loading) setData(result.data);
+    }, [loading, result.data]);
+  
+    const handleSortChange = (key: string|null, order: "ASC" | "DES" | null) => {
+      setSortConfig({ key, order });
+      const paginatedFilter: PaginatedFilter = {
+        query: "",
+        pageSize: 10,
+        page: 0,
+        sortBy: key ?? "createdAt",      // si key es null, usas un valor por defecto
+        sortType: order ?? "DES",        // si order es null, DES de base
+      };
+      
+      // Llamas a handleFilter usando la rama de 'values' (vacío) + paginatedFilter
+      handleFilter({
+        values: {},             // mantiene los filtros anteriores (vacío aquí)
+        paginatedFilter,        // incluye sortBy/sortType
+      });
+    };
+  
     return (
-        <div className="event-container">
-            <div>
-                <h3>Eventos</h3>
-                <span>Edirar</span>
-                <span>Eliminar</span>
-                <span>Nuevo</span>
-            </div>
-            <Filter filtros={filtro} onSubmit={handleFilter}/>
-
-            {loading ? <Loading/>
-            :
-            <div>
-            <Table 
+      <div className="event-container">
+        <Filter filtros={filtro} onSubmit={values => handleFilter({ values })} />
+  
+        {loading ? (
+          <Loading />
+        ) : (
+          <Table
             th_element={th_element}
-            data={data} 
+            data={data}
             selectedIds={selectedIds}
             onSelectOne={handleSelectOne}
             onSelectAll={handleSelectAll}
-            />
-            
-            </div>
-            }
-        </div>
-    )
-}
+            sortConfig={sortConfig}               // estado elevado
+            onSortChange={handleSortChange}
+          />
+        )}
+      </div>
+    );
+  }
 
 export default GestionEventos;
 
 
-const filtro = {
+const filtro: FilterType = {
     criterio: [
         {
             name: "criterio_1",
-            values: ["Nombre"]
-        }
+            values: [{
+                value: "Nombre",
+                key: "nombre"
+            }]
+        },
+        {
+            name: "criterio_2",
+            values: [{
+                value: "Fecha Inicio",
+                key: "fechaInicio"
+            }]
+        },
     ]
 }
 
@@ -81,17 +90,17 @@ const th_element = {
             value: "",
             type: "Check",
             key: "check"
-        },{
+        }, {
             value: "Nombre",
-            type: "Text",key: "nombre"
+            type: "Text", key: "nombre"
         },
         {
             value: "Fecha Inicio",
-            type: "Text",key: "fechaInicio"
+            type: "Text", key: "fechaInicio"
         },
         {
             value: "Fecha Fin",
-            type: "Text",key: "fechaFin"
+            type: "Text", key: "fechaFin"
         },
         {
             value: "Hora Inicio",
@@ -103,11 +112,11 @@ const th_element = {
         },
         {
             value: "Activo",
-            type: "Boolean",key: "activo"
+            type: "Boolean", key: "activo"
         },
         {
             value: "Ilimitado",
-            type: "Boolean",key: "ilimitado"
+            type: "Boolean", key: "ilimitado"
         }
     ]
-}as ThData;
+} as ThData;

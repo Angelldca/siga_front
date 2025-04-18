@@ -76,3 +76,15 @@ td {
     margin-left: 1rem;
     font-weight: 500;
  }
+ 
+ .sort-img{
+    padding: 3px;
+}
+ .sort-img:hover{
+    cursor: pointer;
+    transition: transform 0.2s;
+    transform: scale(1.1);
+    background-color: var(--color-gray);
+    border-radius: 50%;
+   
+ }

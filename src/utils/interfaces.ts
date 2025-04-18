@@ -27,7 +27,10 @@ export interface CriteriaFilter {
 export interface FilterType {
     criterio: {
         name: string;
-        values: string[];
+        values: {
+          value: string;
+          key: string;
+        }[];
       }[];
 }
 
@@ -49,3 +52,9 @@ export enum ThType {
   Action  = "Action"
 }
 export type DataRow = Record<string, any>;
+
+
+export interface SortConfig {
+  key: string | null;
+  order: "ASC" | "DES" | null;
+}
