@@ -19,7 +19,7 @@ interface Empresa {
   logo:string;
   nombre:string;
 }
-interface User {
+export interface User {
   id: string;
   email: string;
   role: string;

@@ -18,7 +18,7 @@ export type HandleFilterParams =
     };
 
 export function useDataTable() {
-    const {token,loadingSession } = useAuth();
+    const {token,loadingSession,user } = useAuth();
     const [result, setResult] = useState<any>({});
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -59,7 +59,7 @@ export function useDataTable() {
       useEffect(() => {
             if(loadingSession) return;
             setLoading(true);
-            searchEvent(data, token||"")
+            searchEvent(data, token||"","/api/evento/search",user)
             .then((res) => {
                setResult(res)
             }).catch((err) => {
