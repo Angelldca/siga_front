@@ -25,7 +25,7 @@ export function useDataTable() {
      const [data, setData] = useState<DataFilter>({
          filter: [],
          query: "",
-         pageSize: 1000,
+         pageSize: 100,
          page: 0,
          sortBy: "createdAt",
          sortType: "DES",
