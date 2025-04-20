@@ -2,7 +2,8 @@
 
 .table-container{
     margin-top: 10px;
-    max-height: 400px;       
+    max-height: 400px;
+    min-height: 400px;       
     overflow-y: auto; 
     border: 1px solid #ccc;
    

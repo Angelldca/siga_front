@@ -11,7 +11,7 @@ import { useCheck } from "../../hooks/useCheck";
 
 
 function GestionEventos() {
-  const { result, loading, handleFilter, data: dataFilter } = useDataTable();
+  const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable();
   const [data, setData] = useState<DataRow[]>([]);
   const { selectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
 
@@ -28,12 +28,11 @@ function GestionEventos() {
     setSortConfig({ key, order });
     const paginatedFilter: PaginatedFilter = {
       query: "",
-      pageSize: 10,
+      pageSize: 100,
       page: 0,
       sortBy: key ?? "createdAt",
       sortType: order ?? "DES",
     };
-    console.log(dataFilter)
     const filterValues: CriteriaFilter[] = dataFilter.filter as CriteriaFilter[];
     handleFilter({
       filterValues,
@@ -43,21 +42,26 @@ function GestionEventos() {
 
   return (
     <div className="event-container">
+      <div>
+        <h3>Eventos</h3>
+
+      </div>
       <Filter filtros={filtro} onSubmit={values => handleFilter({ values })} />
 
       {loading ? (
         <Loading />
       ) : (
-        
-          <Table
-            th_element={th_element}
-            data={data}
-            selectedIds={selectedIds}
-            onSelectOne={handleSelectOne}
-            onSelectAll={handleSelectAll}
-            sortConfig={sortConfig}
-            onSortChange={handleSortChange}
-          />
+
+        <Table
+          th_element={th_element}
+          data={data}
+          selectedIds={selectedIds}
+          onSelectOne={handleSelectOne}
+          onSelectAll={handleSelectAll}
+          sortConfig={sortConfig}
+          onSortChange={handleSortChange}
+          setDatafilter={setDatafilter}
+        />
       )}
     </div>
   );
