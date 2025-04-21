@@ -17,16 +17,51 @@ h3{
     height: 400px;
 }
 
-.event-accion{
+.event-action{
     display: flex;
     justify-content: space-between;
     align-items: end;
     margin-bottom: 5px;
 }
 
-.accions{
+.actions{
     display: flex;
     justify-content: space-around;
     align-items: center;
     gap: 10px;
 }
+
+.btn_action{
+    max-width: 60px;
+    padding: 0.5rem 0.5rem; 
+}
+.opacity-btn{
+    opacity: 0.6;
+}
+.btn-container{
+    position: relative;
+    display: inline-block;
+}
+.tootip {
+    font-size: 1rem;
+    color: var(--color-gray-light);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    position: absolute;
+    bottom: 50%;     
+    right: 100%;
+    background: var(--color-text-dark);
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+      
+}
+
+.btn-container:hover .tootip {
+    opacity: 1;
+    visibility: visible;
+  }
