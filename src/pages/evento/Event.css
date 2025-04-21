@@ -16,3 +16,17 @@ h3{
     overflow-y: scroll;
     height: 400px;
 }
+
+.event-accion{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 5px;
+}
+
+.accions{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}

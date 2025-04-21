@@ -8,6 +8,8 @@ import { CriteriaFilter, DataFilter, DataRow, FilterType, PaginatedFilter, SortC
 import { useEffect, useState } from "react";
 import Loading from "../../components/loading/loading";
 import { useCheck } from "../../hooks/useCheck";
+import { filtroEvent, th_elementEvent } from "./eventField";
+import { handleSortChangeUtils } from "../../utils/sortChange";
 
 
 function GestionEventos() {
@@ -15,45 +17,36 @@ function GestionEventos() {
   const [data, setData] = useState<DataRow[]>([]);
   const { selectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
 
-  // Elevamos sortConfig al padre
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
-
-
 
   useEffect(() => {
     if (!loading) setData(result.data);
   }, [loading, result.data]);
+  
 
+  
   const handleSortChange = (key: string | null, order: "ASC" | "DES" | null) => {
-    setSortConfig({ key, order });
-    const paginatedFilter: PaginatedFilter = {
-      query: "",
-      pageSize: 100,
-      page: 0,
-      sortBy: key ?? "createdAt",
-      sortType: order ?? "DES",
-    };
-    const filterValues: CriteriaFilter[] = dataFilter.filter as CriteriaFilter[];
-    handleFilter({
-      filterValues,
-      paginatedFilter,
-    });
+    handleSortChangeUtils(key, order, dataFilter, { setSortConfig, handleFilter });
   };
 
   return (
     <div className="event-container">
-      <div>
+      <div className="event-accion">
         <h3>Eventos</h3>
-
+         <div className="accions">
+          <button className="btn btn-primary">Crear Evento</button>
+          <button className="btn btn-secondary">Detalles</button>
+          <button className="btn btn-danger">Eliminar</button>
+         </div>
       </div>
-      <Filter filtros={filtro} onSubmit={values => handleFilter({ values })} />
+      <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
 
       {loading ? (
         <Loading />
       ) : (
 
         <Table
-          th_element={th_element}
+          th_element={th_elementEvent}
           data={data}
           selectedIds={selectedIds}
           onSelectOne={handleSelectOne}
@@ -69,59 +62,3 @@ function GestionEventos() {
 
 export default GestionEventos;
 
-
-const filtro: FilterType = {
-  criterio: [
-    {
-      name: "criterio_1",
-      values: [{
-        value: "Nombre",
-        key: "nombre"
-      }]
-    },
-    {
-      name: "criterio_2",
-      values: [{
-        value: "Fecha Inicio",
-        key: "fechaInicio"
-      }]
-    },
-  ]
-}
-
-const th_element = {
-  th: [
-    {
-      value: "",
-      type: "Check",
-      key: "check"
-    }, {
-      value: "Nombre",
-      type: "Text", key: "nombre"
-    },
-    {
-      value: "Fecha Inicio",
-      type: "Text", key: "fechaInicio"
-    },
-    {
-      value: "Fecha Fin",
-      type: "Text", key: "fechaFin"
-    },
-    {
-      value: "Hora Inicio",
-      type: "Text", key: "horaInicio"
-    },
-    {
-      value: "Hora Fin",
-      type: "Text", key: "horaFin"
-    },
-    {
-      value: "Activo",
-      type: "Boolean", key: "activo"
-    },
-    {
-      value: "Ilimitado",
-      type: "Boolean", key: "ilimitado"
-    }
-  ]
-} as ThData;
