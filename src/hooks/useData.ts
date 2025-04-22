@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { CriteriaFilter, DataFilter, PaginatedFilter } from "../utils/interfaces";
-import { searchEvent } from "../services/event.service";
+import { search } from "../services/event.service";
 
 export type HandleFilterParams =
   | {
@@ -17,7 +17,7 @@ export type HandleFilterParams =
       paginatedFilter?: PaginatedFilter;
     };
 
-export function useDataTable() {
+export function useDataTable(url:string) {
     const {token,loadingSession,user } = useAuth();
     const [result, setResult] = useState<any>({});
     const [error, setError] = useState<any>(null);
@@ -59,7 +59,7 @@ export function useDataTable() {
       useEffect(() => {
             if(loadingSession) return;
             setLoading(true);
-            searchEvent(data, token||"","/api/evento/search",user)
+            search(data, token||"",url,user)
             .then((res) => {
                setResult(res)
             }).catch((err) => {
