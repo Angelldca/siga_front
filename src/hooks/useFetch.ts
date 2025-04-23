@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { createService, editService, search } from "../services/event.service";
+import { createService, deleteListService, editService, search } from "../services/event.service";
 
 
 
@@ -36,12 +36,25 @@ export function useFetch(url: string) {
       setLoading(false);
       return res;
   };
-  
+  const deletListFetch = async(ids:any[])=> {
+    if (loadingSession) return; 
+    setLoading(true);
+    setError(null);
+    const res = await deleteListService(ids, token || "", url+'/delete-list');
+    if (res.error) {
+      setError({ message: res?.error.errorMessage });
+      
+    }
+    setResult(res);
+    setLoading(false);
+    return res;
+};
     return {
       error,
       loading,
       create,
       editFetch,
+      deletListFetch,
       user,
       result,
     };

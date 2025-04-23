@@ -15,22 +15,23 @@ import { useFetch } from "../../hooks/useFetch";
 import Modal from "../../components/modal/Modal";
 import EventForm, { EventFormValues } from "../../components/event_form/event_form";
 import Alert from "../../components/alert/alert";
+import DeleteAlert from "../../components/delete_alert/deleteAlert";
 
 
 
 function GestionEventos() {
  const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable("/api/evento/search");
- const { create, loading: creating, error,editFetch, user, result: resultFetch } = useFetch("/api/evento");
+ const { create, loading: creating, error,editFetch,deletListFetch, user, result: resultFetch } = useFetch("/api/evento");
 
   const [data, setData] = useState<DataRow[]>([]);
   const [avaible, setAvaible] = useState<number>(0);
-  const { selectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
+  const { selectedIds,setSelectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
 
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
   const [isModalOpen, setModalOpen] = useState(false);
   const [alert, setAlert] = useState<{ type: string, message: string }|null>(null);
   const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
-
+  const [isDelete, setIsDelete] = useState(false);
   useEffect(() => {
     if (!loading) setData(result.data);
   }, [loading, result.data]);
@@ -98,7 +99,34 @@ function GestionEventos() {
 }
 
 const handlerDelete = ()=>{
-  console.log("Delete: ", avaible)
+
+  if (selectedIds.size === 0) {
+    setAlert({ type: "error", message: "Selecciona al menos un evento para eliminar." });
+    return;
+  }
+  const idsToDelete = Array.from(selectedIds);
+
+  deletListFetch(idsToDelete).then((res) => {
+    if (res.error) {
+      setAlert({
+        type: "error",
+        message: res.error.errorMessage || "Error al eliminar el/los evento(s)",
+      });
+    } else {
+      setAlert({
+        type: "success",
+        message: "Evento(s) eliminado(s) correctamente",
+      });
+      setTimeout(() => {
+        setModalOpen(false);
+        setIsDelete(false);
+        setAlert(null);
+        handleFilter({filterValues: []});
+      }, 2000);
+      setSelectedIds(new Set());
+
+    }
+  })
 }
 const showDetail = ()=>{
   console.log("Detail: ", avaible)
@@ -130,7 +158,10 @@ const showDetail = ()=>{
           ilimitado:   evt.ilimitado,
         });
       }}
-       deleteModule={handlerDelete}
+       deleteModule={()=>{
+        setIsDelete(true);
+        setModalOpen(true);
+       }}
        showDetail={showDetail}
        
        />
@@ -152,7 +183,7 @@ const showDetail = ()=>{
         />
       )}
 
-     <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+     <Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false); setIsDelete(false);}}>
       {alert && (
               <Alert
                 type={alert.type}
@@ -163,11 +194,17 @@ const showDetail = ()=>{
              
               />
             )}
+        {isDelete ? 
+        <DeleteAlert module="Producto" 
+        handlerDelete={handlerDelete}
+        onClose={() => { setModalOpen(false); setIsDelete(false); }} />
+        :
         <EventForm
         initialValues={editingEvent || undefined}
         onSubmit={editingEvent ? handlerEdit : handlerCreate}
         onClose={() => { setModalOpen(false); setEditingEvent(null); }}
         />
+        }
       </Modal>
     </div>
   );

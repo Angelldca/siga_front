@@ -94,3 +94,20 @@ export async function editService(data:any, id:any,accessToken: string, url:stri
   const result = await response.json();
   return result;
 }
+
+export async function deleteListService(ids:any[],accessToken: string, url:string, ) {
+  if (!Array.isArray(ids) || ids.length === 0) {
+    throw new Error("El parámetro 'ids' debe ser un array no vacío.");
+  }
+  const response = await fetch(`${urlBack}${url}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`
+    },
+    credentials: "include",
+    body: JSON.stringify({ids})
+  });
+  const result = await response.json();
+  return result;
+}
