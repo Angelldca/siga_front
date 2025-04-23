@@ -30,7 +30,8 @@ export function useCheck(data: DataRow[]) {
         data,
         selectedIds,
         handleSelectOne,
-        handleSelectAll
+        handleSelectAll,
+        setSelectedIds
 
     };
 }

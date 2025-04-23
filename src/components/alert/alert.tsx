@@ -1,7 +1,14 @@
-import React from 'react';
+
 import './Alert.css';
 
-export default function Alert({ type = 'error', message, onClose }) {
+
+interface Props {
+  type:string;
+  message:string;
+  onClose:()=> void
+}
+
+export default function Alert({ type = 'error', message, onClose }:Props) {
   return (
     <div className={`alert alert-${type} animate__animated animate__fadeInRight`}>
       <div className='title-alert'>
