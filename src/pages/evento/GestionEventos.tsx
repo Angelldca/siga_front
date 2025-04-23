@@ -14,13 +14,13 @@ import ActionBtn from "../../components/action_btn/actionBtn";
 import { useFetch } from "../../hooks/useFetch";
 import Modal from "../../components/modal/Modal";
 import EventForm from "../../components/event_form/event_form";
+import Alert from "../../components/alert/alert";
 
 
 
 function GestionEventos() {
  const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable("/api/evento/search");
- const { create, result: createdEvent, loading: creating, error: createError, user } = 
-  useFetch("/api/evento");
+ const { create, loading: creating, error, user } = useFetch("/api/evento");
 
   const [data, setData] = useState<DataRow[]>([]);
   const [avaible, setAvaible] = useState<number>(0);
@@ -28,10 +28,10 @@ function GestionEventos() {
 
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
   const [isModalOpen, setModalOpen] = useState(false);
-
+  const [alert, setAlert] = useState<{ type: string, message: string }|null>(null);
   useEffect(() => {
     if (!loading) setData(result.data);
-  }, [loading, result.data,createdEvent]);
+  }, [loading, result.data,creating]);
 
   useEffect(() => {
     setAvaible(selectedIds.size)
@@ -42,11 +42,25 @@ function GestionEventos() {
   };
 
   const handlerCreate = (value: any)=>{
-    console.log(value)
     //setModalOpen(false);
     create({
       ...value,
       empresa: user?.empresa.id,
+    }).then((res) => {
+      if (res.error) {
+        setAlert({
+          type: "error",
+          message: res.error.errorMessage || "Error al crear el evento",
+        });
+      } else {
+        setAlert({
+          type: "success",
+          message: "Evento creado correctamente",
+        });
+        setTimeout(() => {
+          setModalOpen(false);
+        }, 2000);
+      }
     })
   }
   const handlerEdit = ()=>{
@@ -89,6 +103,16 @@ const showDetail = ()=>{
       )}
 
      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+      {alert && (
+              <Alert
+                type={alert.type}
+                message={alert.message}
+                onClose={() => setAlert(null)
+                
+                }
+             
+              />
+            )}
         <EventForm
          onSubmit={handlerCreate}
         onClose={() => setModalOpen(false)}

@@ -12,16 +12,20 @@ interface ModalProps {
   
 function Modal({ isOpen, onClose, children }: ModalProps) {
   
-    if (!isOpen) return null;
   
-    // Cierra el modal con Escape
-    useEffect(() => {
-      const onEsc = (e: KeyboardEvent) => {
-        if (e.key === "Escape") onClose();
-      };
-      document.addEventListener("keydown", onEsc);
-      return () => document.removeEventListener("keydown", onEsc);
-    }, [onClose]);
+  useEffect(() => {
+    if (!isOpen) return;
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, [isOpen, onClose]); 
+
+ 
+  if (!isOpen) return null;
   
    
     return ReactDOM.createPortal(
