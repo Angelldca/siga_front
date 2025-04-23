@@ -36,18 +36,6 @@ const EventForm = ({
     const [activo, setActivo] = useState(initialValues.activo ?? true);
     const [ilimitado, setIlimitado] = useState(initialValues.ilimitado ?? false);
 
-    /*
-    useEffect(() => {
-        if (initialValues.nombre) setNombre(initialValues.nombre);
-        if (initialValues.fechaInicio) setFechaInicio(initialValues.fechaInicio);
-        if (initialValues.fechaFin) setFechaFin(initialValues.fechaFin);
-        if (initialValues.horaInicio) setHoraInicio(initialValues.horaInicio);
-        if (initialValues.horaFin) setHoraFin(initialValues.horaFin);
-        setActivo(initialValues.activo ?? true);
-        setIlimitado(initialValues.ilimitado ?? false);
-    }, [initialValues]);
-    
-    */
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,7 +49,7 @@ const EventForm = ({
             activo,
             ilimitado,
         });
-        onClose?.();
+        //onClose?.();
     };
 
     return (

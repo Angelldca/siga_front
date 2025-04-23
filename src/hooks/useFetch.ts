@@ -4,33 +4,25 @@ import { createService, search } from "../services/event.service";
 
 
 
-export function useFetch<T = any>(url: string) {
+export function useFetch(url: string) {
     const { token, loadingSession, user } = useAuth();
     const [loading, setLoading] = useState<boolean>(false);
-    const [result, setResult]   = useState<T | null>(null);
-    const [error, setError]     = useState<Error | null>(null);
+    const [error, setError]     = useState<{message:string} | null>(null);
   
-    const create = useCallback(
-      async (params: any) => {
-        console.log("user", user?.empresa.id);
-        console.log("params", params);
+    const create = async(params:any)=> {
         if (loadingSession) return; 
         setLoading(true);
         setError(null);
-        try {
-          const res = await createService(params, token || "", url);
-          setResult(res);
-        } catch (e: any) {
-          setError(e);
-        } finally {
-          setLoading(false);
+        const res = await createService(params, token || "", url);
+        if (res.error) {
+          setError({ message: res?.error.errorMessage });
+          
         }
-      },
-      [token, url, loadingSession]
-    );
+        setLoading(false);
+        return res;
+    };
   
     return {
-      result,
       error,
       loading,
       create,
