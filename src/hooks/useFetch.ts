@@ -1,37 +1,39 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { CriteriaFilter, DataFilter, PaginatedFilter } from "../utils/interfaces";
 import { createService, search } from "../services/event.service";
 
 
 
-export function useFetch <T>(url:string){
-    const {token,loadingSession,user } = useAuth();
+export function useFetch<T = any>(url: string) {
+    const { token, loadingSession, user } = useAuth();
     const [loading, setLoading] = useState<boolean>(false);
-    const [result, setResult] = useState<any>({});
-    const [error, setError] = useState<any>(null);
-    const [data, setData] = useState<any>();
-
-    const create = (params:any)=>{
-
-        useEffect(() => {
-            if(loadingSession) return;
-            setLoading(true);
-            createService(params, token||"",url)
-            .then((res) => {
-               setResult(res)
-            }).catch((err) => {
-                setError(err)
-            }).finally(() => {
-                setLoading(false);
-            })
-        },[data])
-    }
-
+    const [result, setResult]   = useState<T | null>(null);
+    const [error, setError]     = useState<Error | null>(null);
+  
+    const create = useCallback(
+      async (params: any) => {
+        console.log("user", user?.empresa.id);
+        console.log("params", params);
+        if (loadingSession) return; 
+        setLoading(true);
+        setError(null);
+        try {
+          const res = await createService(params, token || "", url);
+          setResult(res);
+        } catch (e: any) {
+          setError(e);
+        } finally {
+          setLoading(false);
+        }
+      },
+      [token, url, loadingSession]
+    );
+  
     return {
-        data,
-        setData,
-        result,error,loading,
-        create
-    }
-}
+      result,
+      error,
+      loading,
+      create,
+      user,
+    };
+  }

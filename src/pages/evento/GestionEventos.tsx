@@ -12,24 +12,26 @@ import { filtroEvent, th_elementEvent } from "./eventField";
 import { handleSortChangeUtils } from "../../utils/sortChange";
 import ActionBtn from "../../components/action_btn/actionBtn";
 import { useFetch } from "../../hooks/useFetch";
+import Modal from "../../components/modal/Modal";
+import EventForm from "../../components/event_form/event_form";
 
 
 
 function GestionEventos() {
  const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable("/api/evento/search");
- const {setData: setDataFech, data: dataFetch, 
-  create,result:resultFetch,error:errorFetch,
-  loading:LoadingFetch} = useFetch("/api/evento");
+ const { create, result: createdEvent, loading: creating, error: createError, user } = 
+  useFetch("/api/evento");
 
   const [data, setData] = useState<DataRow[]>([]);
   const [avaible, setAvaible] = useState<number>(0);
   const { selectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
 
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (!loading) setData(result.data);
-  }, [loading, result.data]);
+  }, [loading, result.data,createdEvent]);
 
   useEffect(() => {
     setAvaible(selectedIds.size)
@@ -39,8 +41,13 @@ function GestionEventos() {
     handleSortChangeUtils(key, order, dataFilter, { setSortConfig, handleFilter });
   };
 
-  const handlerCreate = ()=>{
-     console.log("Create: ", avaible)
+  const handlerCreate = (value: any)=>{
+    console.log(value)
+    //setModalOpen(false);
+    create({
+      ...value,
+      empresa: user?.empresa.id,
+    })
   }
   const handlerEdit = ()=>{
     console.log("Edit: ", avaible)
@@ -57,7 +64,7 @@ const showDetail = ()=>{
        <ActionBtn 
        module="Eventos" 
        avaible={avaible}
-       createModule={handlerCreate}
+       createModule={()=> setModalOpen(true)}
        editModule={handlerEdit}
        deleteModule={handlerDelete}
        showDetail={showDetail}
@@ -80,6 +87,13 @@ const showDetail = ()=>{
           setDatafilter={setDatafilter}
         />
       )}
+
+     <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <EventForm
+         onSubmit={handlerCreate}
+        onClose={() => setModalOpen(false)}
+        />
+      </Modal>
     </div>
   );
 }
