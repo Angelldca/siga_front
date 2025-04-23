@@ -13,14 +13,14 @@ import { handleSortChangeUtils } from "../../utils/sortChange";
 import ActionBtn from "../../components/action_btn/actionBtn";
 import { useFetch } from "../../hooks/useFetch";
 import Modal from "../../components/modal/Modal";
-import EventForm from "../../components/event_form/event_form";
+import EventForm, { EventFormValues } from "../../components/event_form/event_form";
 import Alert from "../../components/alert/alert";
 
 
 
 function GestionEventos() {
  const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable("/api/evento/search");
- const { create, loading: creating, error, user } = useFetch("/api/evento");
+ const { create, loading: creating, error,editFetch, user, result: resultFetch } = useFetch("/api/evento");
 
   const [data, setData] = useState<DataRow[]>([]);
   const [avaible, setAvaible] = useState<number>(0);
@@ -29,9 +29,11 @@ function GestionEventos() {
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, order: null });
   const [isModalOpen, setModalOpen] = useState(false);
   const [alert, setAlert] = useState<{ type: string, message: string }|null>(null);
+  const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
+
   useEffect(() => {
     if (!loading) setData(result.data);
-  }, [loading, result.data,creating]);
+  }, [loading, result.data]);
 
   useEffect(() => {
     setAvaible(selectedIds.size)
@@ -42,7 +44,7 @@ function GestionEventos() {
   };
 
   const handlerCreate = (value: any)=>{
-    //setModalOpen(false);
+   
     create({
       ...value,
       empresa: user?.empresa.id,
@@ -59,27 +61,75 @@ function GestionEventos() {
         });
         setTimeout(() => {
           setModalOpen(false);
+          setAlert(null);
+          handleFilter({filterValues: []});
         }, 2000);
       }
     })
   }
-  const handlerEdit = ()=>{
-    console.log("Edit: ", avaible)
- }
- const handlerDelete = ()=>{
+  const handlerEdit = (value: any)=>{
+    if (selectedIds.size !== 1) {
+      setAlert({ type: "error", message: "Selecciona un solo evento para editar." });
+      return;
+    }
+    const idToEdit = Array.from(selectedIds)[0];
+    const evt = data.find(d => d.id === idToEdit);
+    if (!evt) return;
+    
+    setModalOpen(true);
+    editFetch(evt.id,value).then((res) => {
+      if (res.error) {
+        setAlert({
+          type: "error",
+          message: res.error.errorMessage || "Error al crear el evento",
+        });
+      } else {
+        setAlert({
+          type: "success",
+          message: "Evento editado correctamente",
+        });
+        setTimeout(() => {
+          setModalOpen(false);
+          setAlert(null);
+          handleFilter({filterValues: []});
+        }, 2000);
+      }
+    })
+}
+
+const handlerDelete = ()=>{
   console.log("Delete: ", avaible)
 }
 const showDetail = ()=>{
   console.log("Detail: ", avaible)
 }
 
+
   return (
     <div className="event-container">
        <ActionBtn 
        module="Eventos" 
        avaible={avaible}
-       createModule={()=> setModalOpen(true)}
-       editModule={handlerEdit}
+       createModule={()=> {
+        setEditingEvent(null);
+        setModalOpen(true)
+      }}
+       editModule={()=> {
+        setModalOpen(true)
+        const idToEdit = Array.from(selectedIds)[0];
+        const evt = data.find(d => d.id === idToEdit);
+        if (!evt) return;
+        setEditingEvent({
+          nombre: evt.nombre,
+          type: evt.type,      
+          fechaInicio: evt.fechaInicio,
+          fechaFin:    evt.fechaFin,
+          horaInicio:  evt.horaInicio,
+          horaFin:     evt.horaFin,
+          activo:      evt.activo,
+          ilimitado:   evt.ilimitado,
+        });
+      }}
        deleteModule={handlerDelete}
        showDetail={showDetail}
        
@@ -114,8 +164,9 @@ const showDetail = ()=>{
               />
             )}
         <EventForm
-         onSubmit={handlerCreate}
-        onClose={() => setModalOpen(false)}
+        initialValues={editingEvent || undefined}
+        onSubmit={editingEvent ? handlerEdit : handlerCreate}
+        onClose={() => { setModalOpen(false); setEditingEvent(null); }}
         />
       </Modal>
     </div>
