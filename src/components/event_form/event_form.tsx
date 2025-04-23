@@ -31,8 +31,8 @@ const EventForm = ({
     const [type, setTipoEvento] = useState<EventFormValues["type"]>(initialValues.type || "ALIMENTACION");
     const [fechaInicio, setFechaInicio] = useState(initialValues.fechaInicio || "");
     const [fechaFin, setFechaFin] = useState(initialValues.fechaFin || "");
-    const [horaInicio, setHoraInicio] = useState(initialValues.horaInicio || "");
-    const [horaFin, setHoraFin] = useState(initialValues.horaFin || "");
+    const [horaInicio, setHoraInicio] = useState(initialValues.horaInicio || "00:00:00");
+    const [horaFin, setHoraFin] = useState(initialValues.horaFin || "12:00:00");
     const [activo, setActivo] = useState(initialValues.activo ?? true);
     const [ilimitado, setIlimitado] = useState(initialValues.ilimitado ?? false);
 
@@ -44,8 +44,8 @@ const EventForm = ({
             type,
             fechaInicio,
             fechaFin,
-            horaInicio: `${horaInicio}:00`,
-            horaFin: `${horaFin}:00`,
+            horaInicio: `${horaInicio}`,
+            horaFin: `${horaFin}`,
             activo,
             ilimitado,
         });
@@ -112,6 +112,7 @@ const EventForm = ({
                     <label htmlFor="hora-inicio">Hora Inicio</label>
                     <input
                         type="time"
+                        step="1"
                         id="hora-inicio"
                         value={horaInicio}
                         onChange={e => setHoraInicio(e.target.value)}
@@ -122,6 +123,7 @@ const EventForm = ({
                     <label htmlFor="hora-fin">Hora Fin</label>
                     <input
                         type="time"
+                        step="1"
                         id="hora-fin"
                         value={horaFin}
                         onChange={e => setHoraFin(e.target.value)}
