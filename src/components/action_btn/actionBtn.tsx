@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 interface ActionProps {
   module: string;
   avaible: number;
-  createModule: ()=> void;
+  createModule: ()=>void;
   showDetail: ()=> void;
   deleteModule: ()=> void;
   editModule:()=>void;
