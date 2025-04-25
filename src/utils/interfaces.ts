@@ -58,3 +58,12 @@ export interface SortConfig {
   key: string | null;
   order: "ASC" | "DES" | null;
 }
+
+
+export interface PaginationInfo {
+  totalPages: number;
+  totalElementsPage: number;
+  totalElements: number;
+  size: number;
+  page: number;
+}
