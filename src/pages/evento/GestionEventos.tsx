@@ -17,6 +17,8 @@ import EventForm, { EventFormValues } from "../../components/event_form/event_fo
 import Alert from "../../components/alert/alert";
 import DeleteAlert from "../../components/delete_alert/deleteAlert";
 import { useModuleCrud } from "../../hooks/useModuleCrud";
+import FooterTable from "../../components/footer-table/foter-table";
+import { PaginationInfo } from "../../utils/interfaces";
 
 
 
@@ -24,11 +26,27 @@ function GestionEventos() {
  const {  result, loading,setAvaible,avaible,selectedIds,
     handleSortChange,handlerCreate,handlerEdit,handlerDelete,showDetail,editModule,
   deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
-  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,createModule} = useModuleCrud("/api/evento", "Evento");
+  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule} = useModuleCrud("/api/evento", "Evento");
   const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
-
+  const [metadata, setMetadata] = useState<PaginationInfo >({
+    totalPages: 0,
+    totalElementsPage: 0,
+    totalElements: 0,
+    size: 0,
+    page: 0,
+  });
   useEffect(() => {
-    if (!loading) setData(result.data);
+    if (!loading) {
+      setData(result.data);
+      const { data, totalPages, totalElementsPage, totalElements, size, page } = result;
+      setMetadata({
+        totalPages,
+        totalElementsPage,
+        totalElements,
+        size,
+        page,
+      });
+    }
   }, [loading, result.data]);
 
   useEffect(() => {
@@ -68,7 +86,7 @@ function GestionEventos() {
           setDatafilter={setDatafilter}
         />
       )}
-
+      <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata}/>
      <Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false); setIsDelete(false);}}>
       {alert && (
               <Alert
