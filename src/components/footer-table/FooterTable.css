@@ -40,7 +40,6 @@
     transition: all 300ms;
 }
 .btn-footer-table img:hover{
-    cursor: pointer;
     transition: transform 0.2s;
     transform: scale(1.1);
     background-color: var(--color-gray);
@@ -72,3 +71,5 @@
     color: var(--color-primary);
 }
 
+.disabled { opacity: 0.4; cursor: default; }
+.clickable { cursor: pointer; }
