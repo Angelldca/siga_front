@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { createService, deleteListService, editService, search } from "../services/event.service";
+import { createService, deleteListService, editService, getByIdService, search } from "../services/event.service";
 
 
 
@@ -36,6 +36,19 @@ export function useFetch(url: string) {
       setLoading(false);
       return res;
   };
+  const getByIdFetch = async(id:any)=> {
+    if (loadingSession) return; 
+    setLoading(true);
+    setError(null);
+    const res = await getByIdService(id, token || "", url);
+    if (res.error) {
+      setError({ message: res?.error.errorMessage });
+      
+    }
+    setResult(res);
+    setLoading(false);
+    return res;
+};
   const deletListFetch = async(ids:any[])=> {
     if (loadingSession) return; 
     setLoading(true);
@@ -54,6 +67,7 @@ export function useFetch(url: string) {
       loading,
       create,
       editFetch,
+      getByIdFetch,
       deletListFetch,
       user,
       result,

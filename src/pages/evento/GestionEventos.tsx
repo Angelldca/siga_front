@@ -19,15 +19,18 @@ import DeleteAlert from "../../components/delete_alert/deleteAlert";
 import { useModuleCrud } from "../../hooks/useModuleCrud";
 import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
+import EventDetail from "../../components/event_detail/event-detail";
 
 
 
 function GestionEventos() {
  const {  result, loading,setAvaible,avaible,selectedIds,
-    handleSortChange,handlerCreate,handlerEdit,handlerDelete,showDetail,editModule,
+    handleSortChange,handlerCreate,handlerEdit,handlerDelete,editModule,
   deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
-  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule} = useModuleCrud("/api/evento", "Evento");
+  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule,
+  isDetail, setIsDetail,showDetail, resultFetch,loadingFetch} = useModuleCrud("/api/evento", "Evento");
   const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
+  const [detailModule, setDetailModuele] = useState<Partial<EventFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo >({
     totalPages: 0,
     totalElementsPage: 0,
@@ -66,7 +69,9 @@ function GestionEventos() {
         editModule(setEditingEvent)
        }}
        deleteModule={deleteModule}
-       showDetail={showDetail}
+       showDetail={()=>{
+        showDetail(setDetailModuele)
+       }}
        
        />
       <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
@@ -87,7 +92,7 @@ function GestionEventos() {
         />
       )}
       <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata}/>
-     <Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false); setIsDelete(false);}}>
+     <Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false);setEditingEvent(null); setIsDelete(false); setIsDetail(false)}}>
       {alert && (
               <Alert
                 type={alert.type}
@@ -101,7 +106,12 @@ function GestionEventos() {
         {isDelete ? 
         <DeleteAlert module="Producto" 
         handlerDelete={handlerDelete}
-        onClose={() => { setModalOpen(false); setIsDelete(false); }} />
+        onClose={() => { setModalOpen(false); setIsDelete(false); setIsDetail(false)}} />
+        : isDetail ? 
+        <EventDetail result={detailModule} onEdit={()=>{
+          setModalOpen(false); setIsDelete(false); setIsDetail(false);
+          editModule(setEditingEvent)
+         }}/>
         :
         <EventForm
         initialValues={editingEvent || undefined}
