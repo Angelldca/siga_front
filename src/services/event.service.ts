@@ -66,7 +66,7 @@ export async function createService(data:any,accessToken: string, url:string ) {
 
 export async function getByIdService(id:any,accessToken: string, url:string, ) {
   
-  const response = await fetch(`${urlBack}${url}?id=${id}`, {
+  const response = await fetch(`${urlBack}${url}/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

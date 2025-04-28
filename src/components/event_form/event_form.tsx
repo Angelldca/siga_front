@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./EventForm.css";
 
 export interface EventFormValues {
+    id: string | null
     nombre: string;
     type: "ALIMENTACION" | "GENERAL";
     fechaInicio: string; // "YYYY-MM-DD"
@@ -40,6 +41,7 @@ const EventForm = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit({
+            id:null,
             nombre,
             type,
             fechaInicio,

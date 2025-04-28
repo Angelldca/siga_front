@@ -11,7 +11,7 @@ import { useFetch } from "./useFetch";
 
 export function useModuleCrud(url: string, module:string) {
 const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable(url+"/search"||"/api/evento/search");
- const { create, editFetch,deletListFetch, user } = useFetch(url||"/api/evento");
+ const {loading: loadingFetch, create, editFetch,deletListFetch,getByIdFetch, user,result: resultFetch } = useFetch(url||"/api/evento");
      const [data, setData] = useState<DataRow[]>([]);
       const [avaible, setAvaible] = useState<number>(0);
       const { selectedIds,setSelectedIds, handleSelectOne, handleSelectAll } = useCheck(data);
@@ -20,6 +20,7 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
       const [isModalOpen, setModalOpen] = useState(false);
       const [alert, setAlert] = useState<{ type: string, message: string }|null>(null);
       const [isDelete, setIsDelete] = useState(false);
+      const [isDetail, setIsDetail] = useState(false);
 
 
    const handleSortChange = (key: string | null, order: "ASC" | "DES" | null) => {
@@ -110,29 +111,46 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
       }
     })
   }
-  const showDetail = ()=>{
-    console.log("Detail: ", avaible)
-  }
+
  const editModule=(setEditingEvent:({})=>void)=> {
     setModalOpen(true)
     const idToEdit = Array.from(selectedIds)[0];
     const evt = data.find(d => d.id === idToEdit);
     if (!evt) return;
-    setEditingEvent({
-      nombre: evt.nombre,
-      type: evt.type,      
-      fechaInicio: evt.fechaInicio,
-      fechaFin:    evt.fechaFin,
-      horaInicio:  evt.horaInicio,
-      horaFin:     evt.horaFin,
-      activo:      evt.activo,
-      ilimitado:   evt.ilimitado,
-    });
+    setEditingEvent(evt);
   }
   const deleteModule=()=>{
     setIsDelete(true);
     setModalOpen(true);
    }
+   function showDetail (setDetailModule:({})=>void){
+    if (selectedIds.size !== 1) {
+      setAlert({ type: "error", message: `Selecciona un ${module.toLowerCase()}  para ver los detalles.` });
+      return null;
+    }
+    const idToGet = Array.from(selectedIds)[0];
+   
+    getByIdFetch(idToGet).then((res) => {
+      if (res.error) {
+        setAlert({
+          type: "error",
+          message: res.error.errorMessage || `Error al ver los detalles del/de la ${module.toLowerCase()}(s)`,
+        });
+        
+      }
+      setDetailModule(res)
+    }).catch((err)=>{
+      setAlert({
+        type: "error",
+        message: `Error inesperado al ver los detalles del/de la ${module.toLowerCase()}(s)`,
+      });
+    }).finally(()=>{
+      setIsDetail(true)
+      setModalOpen(true)
+
+    })
+  }
+ 
   const createModule=(setEditingEvent:(param:{} | null)=>void)=> {
     setEditingEvent(null);
     setModalOpen(true)
@@ -141,7 +159,7 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
     return {
         result, loading,setAvaible,avaible,setSelectedIds,selectedIds,
         handleSortChange,handlerCreate,handlerEdit,handlerDelete,showDetail,editModule,
-        deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
-        setAlert,isDelete,setModalOpen,setIsDelete,dataFilter,handleFilter,data,setData,createModule
+        deleteModule,isDetail, setIsDetail,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
+        setAlert,isDelete,setModalOpen,setIsDelete,dataFilter,handleFilter,data,setData,createModule,resultFetch,loadingFetch
     };
 }

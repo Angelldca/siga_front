@@ -63,6 +63,14 @@ button {
     background-color: var(--color-error); /* #EF4444 */
     color: white;
   }
+  .btn-success {
+    background-color: var(--color-success); /* #22C55E */
+    color: white;
+  }
+  .btn-success:hover {
+    background-color: #01b744
+    
+  }
   .btn-danger:hover {
     background-color: #DC2626;
   }
