@@ -112,11 +112,18 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
     })
   }
 
- const editModule=(setEditingEvent:({})=>void)=> {
-    setModalOpen(true)
+ const editModule=(setEditingEvent:({})=>void, openModal: boolean)=> {
+    setModalOpen(openModal)
+    if(selectedIds.size !== 1){
+      setEditingEvent({})
+      return;
+    }
     const idToEdit = Array.from(selectedIds)[0];
     const evt = data.find(d => d.id === idToEdit);
-    if (!evt) return;
+    if (!evt) {
+      setEditingEvent({})
+      return;
+    }
     setEditingEvent(evt);
   }
   const deleteModule=()=>{
