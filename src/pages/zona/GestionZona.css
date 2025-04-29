@@ -8,6 +8,7 @@ h3{
 
 .event-container{
     padding: 1rem 1rem;
+    width: 100%;
 }
 
 .table-container-event{
@@ -15,4 +16,17 @@ h3{
     overflow-x: scroll;
     overflow-y: scroll;
     height: 400px;
+}
+
+.gestion-zona{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1;
+    padding: 1rem;
+}
+
+.form-container-zona{
+    margin-top: 60px;
+    padding: 1rem 1rem;
 }

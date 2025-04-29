@@ -66,7 +66,7 @@ function GestionEventos() {
         createModule(setEditingEvent)
        }}
        editModule={()=>{
-        editModule(setEditingEvent)
+        editModule(setEditingEvent,true)
        }}
        deleteModule={deleteModule}
        showDetail={()=>{
@@ -110,7 +110,7 @@ function GestionEventos() {
         : isDetail ? 
         <EventDetail result={detailModule} onEdit={()=>{
           setModalOpen(false); setIsDelete(false); setIsDetail(false);
-          editModule(setEditingEvent)
+          editModule(setEditingEvent,true)
          }}/>
         :
         <EventForm

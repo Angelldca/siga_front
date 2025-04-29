@@ -24,6 +24,7 @@ import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
 import EventDetail from "../../components/event_detail/event-detail";
 import ActionBtnTable from "../../components/action_btn_table/action_btn_table";
+import ZonaForm from "../../components/zona_form/zona_form";
 
 
 
@@ -45,7 +46,7 @@ function GestionZona() {
   useEffect(() => {
     if (!loading) {
       setData(result.data);
-      const { data, totalPages, totalElementsPage, totalElements, size, page } = result;
+      const { totalPages, totalElementsPage, totalElements, size, page } = result;
       setMetadata({
         totalPages,
         totalElementsPage,
@@ -58,19 +59,22 @@ function GestionZona() {
 
   useEffect(() => {
     setAvaible(selectedIds.size)
+    editModule(setEditingEvent,false);
   }, [selectedIds]);
 
 
   return (
+    <div className="gestion-zona">
+
     <div className="event-container">
        <ActionBtn 
        module="Zona" 
        avaible={avaible}
        createModule={()=>{
-        createModule(setEditingEvent)
+       // createModule(setEditingEvent)
        }}
        editModule={()=>{
-        editModule(setEditingEvent)
+        
        }}
        deleteModule={deleteModule}
        showDetail={()=>{
@@ -110,23 +114,27 @@ function GestionZona() {
              
               />
             )}
-        {isDelete ? 
+        {isDelete && 
         <DeleteAlert module="elementos seleccionados" 
         handlerDelete={handlerDelete}
-        onClose={() => { setModalOpen(false); setIsDelete(false); setIsDetail(false)}} />
-        : isDetail ? 
+        onClose={() => { setModalOpen(false); setIsDelete(false); setIsDetail(false)}} />}
+        {
+         isDetail &&
         <EventDetail result={detailModule} onEdit={()=>{
           setModalOpen(false); setIsDelete(false); setIsDetail(false);
-          editModule(setEditingEvent)
+          editModule(setEditingEvent,false)
          }}/>
-        :
-        <EventForm
-        initialValues={editingEvent || undefined}
-        onSubmit={editingEvent ? handlerEdit : handlerCreate}
-        onClose={() => { setModalOpen(false); setEditingEvent(null); }}
-        />
         }
       </Modal>
+    </div>
+    <div className="form-container-zona">
+
+    <ZonaForm 
+     initialValues={editingEvent || undefined}
+     onSubmit={editingEvent ? handlerEdit : handlerCreate}
+     onClose={() => { setModalOpen(false); setEditingEvent(null); }}
+    />
+    </div>
     </div>
   );
 }
