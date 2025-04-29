@@ -21,10 +21,12 @@ const CardAdmin = () => {
                 </Link>
             </Can>
             <Can module="ADMINISTRACION" permission="GESTION-AREA">
+            <Link className='' to="zonas">
                 <div className="card">
                     <img src={menu} className="img_card" />
                     <p>Zonas</p>
                 </div>
+            </Link>
             </Can>
             <Can module="ADMINISTRACION" permission="GESTION-PUERTA">
                 <div className="card">

@@ -8,6 +8,7 @@ import { PermissionRoute } from './utils/PermissionRoute';
 import GestionEventos from './pages/evento/GestionEventos';
 import { useAuth } from './context/AuthContext';
 import Loading from './components/loading/loading';
+import GestionZona from './pages/zona/GestionZona';
 
 function App() {
   const {loadingSession } = useAuth();
@@ -27,6 +28,7 @@ function App() {
           </PermissionRoute>
         } >
           <Route path="eventos" element={<GestionEventos />} />
+          <Route path="zonas" element={<GestionZona />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -130,6 +130,7 @@ const Table = ({
                           checked={allSelected}
                           onChange={onSelectAll}
                         />
+                        : th.type === "Action" ?  <p>{th.value + ""}</p>
                         :
                         <>
                           <div className='th-sort'>
@@ -191,7 +192,6 @@ const Table = ({
                     ) : th.type === "Action" ? (
                       children
                     ) : (
-                      // muestra el valor de row[th.key] o vacío
                       row[th.key] ?? ""
                     )}
                   </td>

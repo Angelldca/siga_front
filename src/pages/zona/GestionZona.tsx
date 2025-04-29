@@ -1,6 +1,9 @@
 
+
+
+
 import Filter from "../../components/filter/filter";
-import "./Event.css"
+import "./GestionZona.css"
 
 
 import Table from "../../components/table/table";
@@ -8,7 +11,7 @@ import Table from "../../components/table/table";
 import { useEffect, useState } from "react";
 import Loading from "../../components/loading/loading";
 
-import { filtroEvent, th_elementEvent } from "./eventField";
+import { filtroEvent, th_elementEvent } from "./zonaField";
 
 import ActionBtn from "../../components/action_btn/actionBtn";
 
@@ -20,15 +23,16 @@ import { useModuleCrud } from "../../hooks/useModuleCrud";
 import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
 import EventDetail from "../../components/event_detail/event-detail";
+import ActionBtnTable from "../../components/action_btn_table/action_btn_table";
 
 
 
-function GestionEventos() {
+function GestionZona() {
  const {  result, loading,setAvaible,avaible,selectedIds,
     handleSortChange,handlerCreate,handlerEdit,handlerDelete,editModule,
   deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
   setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule,
-  isDetail, setIsDetail,showDetail, resultFetch,loadingFetch} = useModuleCrud("/api/evento", "Evento");
+  isDetail, setIsDetail,showDetail} = useModuleCrud("/api/zona", "Zona");
   const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
   const [detailModule, setDetailModuele] = useState<Partial<EventFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo >({
@@ -60,7 +64,7 @@ function GestionEventos() {
   return (
     <div className="event-container">
        <ActionBtn 
-       module="Eventos" 
+       module="Zona" 
        avaible={avaible}
        createModule={()=>{
         createModule(setEditingEvent)
@@ -89,6 +93,9 @@ function GestionEventos() {
           sortConfig={sortConfig}
           onSortChange={handleSortChange}
           setDatafilter={setDatafilter}
+          children= {<ActionBtnTable module="Evento" asignModule={()=>{
+            createModule(setEditingEvent)
+           }}/>}
         />
       )}
       <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata}/>
@@ -124,5 +131,5 @@ function GestionEventos() {
   );
 }
 
-export default GestionEventos;
+export default GestionZona;
 
