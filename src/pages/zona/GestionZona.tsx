@@ -97,9 +97,6 @@ function GestionZona() {
           sortConfig={sortConfig}
           onSortChange={handleSortChange}
           setDatafilter={setDatafilter}
-          children= {<ActionBtnTable module="Evento" asignModule={()=>{
-            createModule(setEditingEvent)
-           }}/>}
         />
       )}
       <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata}/>
@@ -118,13 +115,6 @@ function GestionZona() {
         <DeleteAlert module="elementos seleccionados" 
         handlerDelete={handlerDelete}
         onClose={() => { setModalOpen(false); setIsDelete(false); setIsDetail(false)}} />}
-        {
-         isDetail &&
-        <EventDetail result={detailModule} onEdit={()=>{
-          setModalOpen(false); setIsDelete(false); setIsDetail(false);
-          editModule(setEditingEvent,false)
-         }}/>
-        }
       </Modal>
     </div>
     <div className="form-container-zona">

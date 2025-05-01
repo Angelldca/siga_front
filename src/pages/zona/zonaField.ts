@@ -18,12 +18,10 @@ export const filtroEvent: FilterType = {
         value: "",
         type: "Check",
         key: "check"
-      }, {
+      }, 
+      {
         value: "Nombre",
-        type: "Text", key: "nombre"
-      },{
-        value: "Acciones",
-        type: "Action", key: "acciones"
-      }
-    ]
+        type: "Text",
+         key: "nombre"
+      }]
   } as ThData;
