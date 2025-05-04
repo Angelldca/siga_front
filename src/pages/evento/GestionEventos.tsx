@@ -72,7 +72,10 @@ function GestionEventos() {
        showDetail={()=>{
         showDetail(setDetailModuele)
        }}
-       
+       create={true}
+       edit={true}
+       deleteBtn={true}
+       show={true}
        />
       <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
 

@@ -17,7 +17,7 @@ export type HandleFilterParams =
     paginatedFilter?: PaginatedFilter;
   };
 
-export function useDataTable(url: string, byBusiness: boolean = true) {
+export function useDataTable(url: string, byBusiness: boolean = true,byDelete=false) {
   const { token, loadingSession, user } = useAuth();
   const [result, setResult] = useState<any>({});
   const [error, setError] = useState<any>(null);
@@ -25,7 +25,7 @@ export function useDataTable(url: string, byBusiness: boolean = true) {
   const [data, setData] = useState<DataFilter>({
     filter: [],
     query: "",
-    pageSize: 100,
+    pageSize: 10,
     page: 0,
     sortBy: "createdAt",
     sortType: "DES",
@@ -70,7 +70,7 @@ export function useDataTable(url: string, byBusiness: boolean = true) {
         })
 
     }else{
-      searchByBusiness(data, token || "", url, user)
+      searchByBusiness(data, token || "", url, user,byDelete)
         .then((res) => {
           setResult(res)
         }).catch((err) => {

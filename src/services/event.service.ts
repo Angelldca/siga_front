@@ -5,24 +5,38 @@ import { DataFilter } from "../utils/interfaces";
 
 
 export async function searchByBusiness(dataFilter: DataFilter, 
-  accessToken: string, url:string, user:User| null
+  accessToken: string, url:string, user:User| null, byDelete:boolean = false
 ) {
-  
-  let body: DataFilter = dataFilter;
-  if(user?.empresa){
+  let updatedFilterArray = dataFilter.filter ?? [];
 
-    const existing = dataFilter.filter ?? [];
-    const updatedFilterArray = [...existing, {
-      key: "empresa.id",
-      operator: "EQUALS",
-      value: user?.empresa.id,
-      logicalOperation: "AND"
-    }];
-      body = {
-      ...dataFilter,
-      filter: updatedFilterArray,
-    };
+  if (user?.empresa) {
+    updatedFilterArray = [
+      ...updatedFilterArray,
+      {
+        key: "empresa.id",
+        operator: "EQUALS",
+        value: user.empresa.id,
+        logicalOperation: "AND"
+      }
+    ];
   }
+
+  if (byDelete) {
+    updatedFilterArray = [
+      ...updatedFilterArray,
+      {
+        key: "isDelete",
+        operator: "EQUALS",
+        value: false,
+        logicalOperation: "AND"
+      }
+    ];
+  }
+
+  const body: DataFilter = {
+    ...dataFilter,
+    filter: updatedFilterArray
+  };
 
   const response = await fetch(`${urlBack}${url}`, {
     method: "POST",
@@ -33,15 +47,15 @@ export async function searchByBusiness(dataFilter: DataFilter,
     credentials: "include",
     body: JSON.stringify(body)
   });
- 
+
   const result = await response.json();
 
   if (!response.ok) {
     throw new Error("No se pudo obtener la información");
   }
+
   return result;
 }
-
 
 
 

@@ -30,3 +30,7 @@ h3{
     margin-top: 60px;
     padding: 1rem 1rem;
 }
+
+.zona-alert-cntainer{
+    position: relative;
+}

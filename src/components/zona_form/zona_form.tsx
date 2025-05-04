@@ -1,11 +1,12 @@
 
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import "./ZonaForm.css"
 import { useModuleCrud } from "../../hooks/useModuleCrud";
 import { useDataTable } from "../../hooks/useData";
 import Select from "react-select";
 import { MultiValue } from "react-select";
+import { useAuth } from "../../context/AuthContext";
 
 type OptionType = {
     value: string;
@@ -16,10 +17,8 @@ type OptionType = {
 export interface ZonaFormValues {
     id: string | null
     nombre: string;
-    eventos: {
-        id: string;
-        nombre: string;
-    }[];
+    empresaId?: string | null;
+    eventosId: string[];
 }
 interface PropsForm {
     initialValues?: Partial<ZonaFormValues>;
@@ -38,6 +37,7 @@ const ZonaForm = ({
     const [nombre, setNombre] = useState(initialValues.nombre || "");
     const [eventosDisponibles, setEventosDisponibles] = useState<OptionType[]>([]);
     const [eventosSeleccionados, setEventosSeleccionados] = useState<OptionType[]>([]);
+    const {user} = useAuth();
     // Cargar eventos disponibles
     useEffect(() => {
         if (result?.data) {
@@ -51,8 +51,12 @@ const ZonaForm = ({
 
     // Cargar nombre si cambian los initialValues
     useEffect(() => {
-        setNombre(initialValues.nombre || "");
-    }, [initialValues]);
+        if (initialValues.nombre) {
+            setNombre(initialValues.nombre);
+        }else{
+            setNombre("");
+        }
+    }, [initialValues.nombre]);
 
     // Si es edición, cargar eventos asociados
     useEffect(() => {
@@ -85,17 +89,17 @@ const ZonaForm = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+    
         const eventosFinales = eventosDisponibles
             .filter(e => eventosSeleccionados.map(s => s.value).includes(e.value))
             .map(e => ({
                 id: e.value,
                 nombre: e.label,
             }));
-
         onSubmit({
             id: initialValues.id || null,
             nombre,
-            eventos: eventosFinales,
+            eventosId: eventosFinales.map(e => e.id),
         });
     };
 
@@ -110,7 +114,7 @@ const ZonaForm = ({
                     name="event-name"
                     required
                     value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
+                    onChange={(e) => {setNombre(e.target.value)}}
                 />
             </div>
             <div className="form-group">
