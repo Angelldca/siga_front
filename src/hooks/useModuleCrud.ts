@@ -9,8 +9,8 @@ import { useFetch } from "./useFetch";
 
 
 
-export function useModuleCrud(url: string, module:string) {
-const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable(url+"/search"||"/api/evento/search");
+export function useModuleCrud(url: string, module:string,byBusiness=false,byDelete=false) {
+const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable(url+"/search"||"/api/evento/search",byBusiness,byDelete);
  const {loading: loadingFetch, create, editFetch,deletListFetch,getByIdFetch, user,result: resultFetch } = useFetch(url||"/api/evento");
      const [data, setData] = useState<DataRow[]>([]);
       const [avaible, setAvaible] = useState<number>(0);
@@ -28,7 +28,6 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
     };
   
     const handlerCreate = (value: any)=>{
-     
       create({
         ...value,
         empresa: user?.empresa.id,
@@ -57,11 +56,9 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
         return;
       }
       const idToEdit = Array.from(selectedIds)[0];
-      const evt = data.find(d => d.id === idToEdit);
-      if (!evt) return;
-      
+      if (!idToEdit) return;
       setModalOpen(true);
-      editFetch(evt.id,value).then((res) => {
+      editFetch(idToEdit,value).then((res) => {
         if (res.error) {
           setAlert({
             type: "error",
@@ -96,6 +93,7 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
           message: res.error.errorMessage || `Error al eliminar el/los ${module.toLowerCase()}(s)`,
         });
       } else {
+        console.log("Mostrando el alert de exito")
         setAlert({
           type: "success",
           message: `${module}(s) eliminado(s) correctamente`,
@@ -105,8 +103,8 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
           setIsDelete(false);
           setAlert(null);
           handleFilter({filterValues: []});
+          setSelectedIds(new Set());
         }, 2000);
-        setSelectedIds(new Set());
   
       }
     })
@@ -158,9 +156,9 @@ const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter 
     })
   }
  
-  const createModule=(setEditingEvent:(param:{} | null)=>void)=> {
+  const createModule=(setEditingEvent:(param:{} | null)=>void, isModalOpen=true)=> {
     setEditingEvent(null);
-    setModalOpen(true)
+    setModalOpen(isModalOpen);
   }
 
     return {

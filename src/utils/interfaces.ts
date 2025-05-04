@@ -20,7 +20,7 @@ export interface DataFilter {
 export interface CriteriaFilter {
       key: string;
       operator: string;
-      value: string;
+      value: any;
       logicalOperation: string;
 }
 
