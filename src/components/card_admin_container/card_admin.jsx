@@ -21,17 +21,27 @@ const CardAdmin = () => {
                 </Link>
             </Can>
             <Can module="ADMINISTRACION" permission="GESTION-AREA">
-            <Link className='' to="zonas">
-                <div className="card">
-                    <img src={menu} className="img_card" />
-                    <p>Zonas</p>
-                </div>
-            </Link>
+                <Link className='' to="zonas">
+                    <div className="card">
+                        <img src={menu} className="img_card" />
+                        <p>Zonas</p>
+                    </div>
+                </Link>
             </Can>
+
             <Can module="ADMINISTRACION" permission="GESTION-PUERTA">
+                <Link className='' to="puertas">
+                    <div className="card">
+                        <img src={plato} className="img_card" />
+                        <p>Puntos de Control</p>
+                    </div>
+                </Link>
+            </Can>
+
+            <Can module="CONTROL_ACCESO" permission="GESTION-ACCESO">
                 <div className="card">
                     <img src={plato} className="img_card" />
-                    <p>Control de Acceso</p>
+                    <p>Accesos</p>
                 </div>
             </Can>
             <Can module="ADMINISTRACION" permission="GESTION-CIUDADANOS">

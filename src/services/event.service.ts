@@ -5,15 +5,14 @@ import { DataFilter } from "../utils/interfaces";
 
 
 export async function searchByBusiness(dataFilter: DataFilter, 
-  accessToken: string, url:string, user:User| null, byDelete:boolean = false
+  accessToken: string, url:string, user:User| null, byDelete:boolean = false,keySearchBusiness=""
 ) {
   let updatedFilterArray = dataFilter.filter ?? [];
-
   if (user?.empresa) {
     updatedFilterArray = [
       ...updatedFilterArray,
       {
-        key: "empresa.id",
+        key: keySearchBusiness.length > 0 ? keySearchBusiness : "empresa.id",
         operator: "EQUALS",
         value: user.empresa.id,
         logicalOperation: "AND"

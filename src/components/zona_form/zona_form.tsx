@@ -1,8 +1,7 @@
 
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./ZonaForm.css"
-import { useModuleCrud } from "../../hooks/useModuleCrud";
 import { useDataTable } from "../../hooks/useData";
 import Select from "react-select";
 import { MultiValue } from "react-select";
@@ -31,13 +30,12 @@ const ZonaForm = ({
     onSubmit,
     onClose,
 }: PropsForm) => {
-    const {result } = useDataTable("/api/evento/search");
+    const {result } = useDataTable("/api/evento/search",true);
     const { handleFilter: handleFilterZonaEvento, result: resultZonaEvento } = useDataTable("/api/zona-evento/search",false);
 
     const [nombre, setNombre] = useState(initialValues.nombre || "");
     const [eventosDisponibles, setEventosDisponibles] = useState<OptionType[]>([]);
     const [eventosSeleccionados, setEventosSeleccionados] = useState<OptionType[]>([]);
-    const {user} = useAuth();
     // Cargar eventos disponibles
     useEffect(() => {
         if (result?.data) {

@@ -3,7 +3,7 @@
 
 
 import Filter from "../../components/filter/filter";
-import "./GestionZona.css"
+import "./GestionPuerta.css"
 
 
 import Table from "../../components/table/table";
@@ -11,7 +11,7 @@ import Table from "../../components/table/table";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "../../components/loading/loading";
 
-import { filtroEvent, th_elementEvent } from "./zonaField";
+import { filtroPuerta, th_elementPuerta } from "./puertaField";
 
 import ActionBtn from "../../components/action_btn/actionBtn";
 
@@ -22,17 +22,20 @@ import { useModuleCrud } from "../../hooks/useModuleCrud";
 import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
 import ZonaForm, { ZonaFormValues } from "../../components/zona_form/zona_form";
+import PuertaForm from "../../components/PuertaForm/PuertaForm";
 
 
 
-function GestionZona() {
+function GestionPuerta() {
   const { result, loading, setAvaible, avaible, selectedIds,
     handleSortChange, handlerDelete, editModule,
     deleteModule, handleSelectOne, handleSelectAll, sortConfig, setDatafilter, isModalOpen, alert,
     setAlert, isDelete, setModalOpen, setIsDelete, handleFilter, data, setData, dataFilter, createModule,
-    setIsDetail } = useModuleCrud("/api/zona", "Zona", true, true);
-  const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
-    setAlert:setalertZonaEvento } = useModuleCrud("/api/zona-evento", "Zona");
+    setIsDetail } = useModuleCrud("/api/puerta", "Puerta", true, true,"zona.empresa.id");
+  
+  
+    const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
+    setAlert:setalertZonaEvento } = useModuleCrud("/api/puerta", "Puerta");
 
   const [editingEvent, setEditingEvent] = useState<Partial<ZonaFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo>({
@@ -83,14 +86,14 @@ function GestionZona() {
           show={false}
           deleteModule={deleteModule}
         />
-        <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
+        <Filter filtros={filtroPuerta} onSubmit={values => handleFilter({ values })} />
 
         {loading ? (
           <Loading />
         ) : (
 
           <Table
-            th_element={th_elementEvent}
+            th_element={th_elementPuerta}
             data={data}
             selectedIds={selectedIds}
             onSelectOne={handleSelectOne}
@@ -118,7 +121,7 @@ function GestionZona() {
       </div>
       <div className="form-container-zona">
         <div className="zona-alert-cntainer">
-          <ZonaForm
+          <PuertaForm
             initialValues={editingEvent || undefined}
             onSubmit={editingEvent ? handlerEdit : handlerCreate}
             onClose={() => { setModalOpen(false); setEditingEvent(null); }}
@@ -138,5 +141,5 @@ function GestionZona() {
   );
 }
 
-export default GestionZona;
+export default GestionPuerta;
 
