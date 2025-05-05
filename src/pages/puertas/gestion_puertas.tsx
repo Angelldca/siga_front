@@ -31,11 +31,13 @@ function GestionPuerta() {
     handleSortChange, handlerDelete, editModule,
     deleteModule, handleSelectOne, handleSelectAll, sortConfig, setDatafilter, isModalOpen, alert,
     setAlert, isDelete, setModalOpen, setIsDelete, handleFilter, data, setData, dataFilter, createModule,
-    setIsDetail } = useModuleCrud("/api/puerta", "Puerta", true, true,"zona.empresa.id");
+    setIsDetail } = useModuleCrud({url:"/api/puerta", module:"Puerta", 
+      byBusiness:true, byDelete:true,keySearchBusiness:"zona.empresa.id"});
   
   
     const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
-    setAlert:setalertZonaEvento } = useModuleCrud("/api/puerta", "Puerta");
+    setAlert:setalertZonaEvento } = useModuleCrud({
+      url:"/api/puerta", module:"Puerta",byBusiness:true, byDelete:true,keySearchBusiness:"zona.empresa.id",list:false});
 
   const [editingEvent, setEditingEvent] = useState<Partial<ZonaFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo>({
@@ -58,6 +60,7 @@ function GestionPuerta() {
       });
     }
   }, [loading, result.data]);
+  
   useMemo(() => {
     handleFilter({ filterValues: [] });
   }, [resultZonaEvento.data])
@@ -105,7 +108,7 @@ function GestionPuerta() {
         )}
         <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata} />
         <Modal isOpen={isModalOpen} onClose={() => { setModalOpen(false); setEditingEvent(null); setIsDelete(false); setIsDetail(false) }}>
-          {alert && (
+          {alert &&(
             <Alert
               type={alert.type}
               message={alert.message}

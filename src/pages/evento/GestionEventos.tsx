@@ -28,7 +28,8 @@ function GestionEventos() {
     handleSortChange,handlerCreate,handlerEdit,handlerDelete,editModule,
   deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
   setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule,
-  isDetail, setIsDetail,showDetail, resultFetch,loadingFetch} = useModuleCrud("/api/evento", "Evento");
+  isDetail, setIsDetail,showDetail} = useModuleCrud({
+    url:"/api/evento", module:"Evento",byBusiness:true, byDelete:true});
   const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
   const [detailModule, setDetailModuele] = useState<Partial<EventFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo >({
@@ -41,7 +42,7 @@ function GestionEventos() {
   useEffect(() => {
     if (!loading) {
       setData(result.data);
-      const { data, totalPages, totalElementsPage, totalElements, size, page } = result;
+      const { totalPages, totalElementsPage, totalElements, size, page } = result;
       setMetadata({
         totalPages,
         totalElementsPage,

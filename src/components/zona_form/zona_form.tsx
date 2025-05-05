@@ -30,8 +30,8 @@ const ZonaForm = ({
     onSubmit,
     onClose,
 }: PropsForm) => {
-    const {result } = useDataTable("/api/evento/search",true);
-    const { handleFilter: handleFilterZonaEvento, result: resultZonaEvento } = useDataTable("/api/zona-evento/search",false);
+    const {result } = useDataTable({url:"/api/evento/search",byBusiness:true, pageSize:100000});
+    const { handleFilter: handleFilterZonaEvento, result: resultZonaEvento } = useDataTable({url:"/api/zona-evento/search",byBusiness:false});
 
     const [nombre, setNombre] = useState(initialValues.nombre || "");
     const [eventosDisponibles, setEventosDisponibles] = useState<OptionType[]>([]);

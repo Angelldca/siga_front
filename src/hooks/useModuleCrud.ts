@@ -6,13 +6,33 @@ import { useDataTable } from "./useData";
 import { handleSortChangeUtils } from "../utils/sortChange";
 import { useFetch } from "./useFetch";
 
+interface UseDataParams {
+  url: string;
+  module: string;
+  byBusiness?: boolean;
+  byDelete?: boolean;
+  keySearchBusiness?: string;
+  pageSize?: number;
+  list?: boolean;
+}
 
 
-
-export function useModuleCrud(url: string, module:string,byBusiness=false,byDelete=false,keySearchBusiness="") {
+export function useModuleCrud({
+  url,
+  module,
+  byBusiness = true,
+  byDelete = false,
+  keySearchBusiness = "",
+  pageSize = 10,
+  list= true,
+}: UseDataParams) {
   
 const { result, loading, handleFilter, 
-  data: dataFilter, setData: setDatafilter } = useDataTable(url+"/search"||"/api/evento/search",byBusiness,byDelete,keySearchBusiness);
+  data: dataFilter, setData: setDatafilter } = useDataTable({
+    url:url+"/search",
+    byBusiness:byBusiness,byDelete:byDelete,keySearchBusiness:keySearchBusiness,
+    pageSize:pageSize,
+    list:list});
  const {loading: loadingFetch, create, editFetch,deletListFetch,getByIdFetch, user,result: resultFetch } = useFetch(url||"/api/evento");
      const [data, setData] = useState<DataRow[]>([]);
       const [avaible, setAvaible] = useState<number>(0);
