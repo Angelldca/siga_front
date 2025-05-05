@@ -30,9 +30,10 @@ function GestionZona() {
     handleSortChange, handlerDelete, editModule,
     deleteModule, handleSelectOne, handleSelectAll, sortConfig, setDatafilter, isModalOpen, alert,
     setAlert, isDelete, setModalOpen, setIsDelete, handleFilter, data, setData, dataFilter, createModule,
-    setIsDetail } = useModuleCrud("/api/zona", "Zona", true, true);
+    setIsDetail } = useModuleCrud({url:"/api/zona", module:"Zona", byBusiness:true, byDelete:true});
   const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
-    setAlert:setalertZonaEvento } = useModuleCrud("/api/zona-evento", "Zona");
+    setAlert:setalertZonaEvento } = useModuleCrud({
+      url:"/api/zona-evento", module:"Zona",byBusiness:false,byDelete:false,list:false});
 
   const [editingEvent, setEditingEvent] = useState<Partial<ZonaFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo>({

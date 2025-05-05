@@ -16,9 +16,22 @@ export type HandleFilterParams =
     filterValues: CriteriaFilter[];
     paginatedFilter?: PaginatedFilter;
   };
-
-export function useDataTable(url: string, byBusiness: boolean = true,byDelete=false,keySearchBusiness="",
-  pageSize=10) {
+  interface UseDataTableParams {
+    url: string;
+    byBusiness?: boolean;
+    byDelete?: boolean;
+    keySearchBusiness?: string;
+    pageSize?: number;
+    list?: boolean;
+}
+export function useDataTable({
+  url,
+  byBusiness = true,
+  byDelete = false,
+  keySearchBusiness = "",
+  pageSize = 10,
+  list = true,
+}: UseDataTableParams) {
 
   const { token, loadingSession, user } = useAuth();
   const [result, setResult] = useState<any>({});
@@ -59,7 +72,7 @@ export function useDataTable(url: string, byBusiness: boolean = true,byDelete=fa
     });
   };
   useEffect(() => {
-    if (loadingSession) return;
+    if (loadingSession || !list) return;
     setLoading(true);
     if (!byBusiness) {
       search(data, token || "", url, user)
