@@ -9,6 +9,7 @@ import GestionEventos from './pages/evento/GestionEventos';
 import { useAuth } from './context/AuthContext';
 import Loading from './components/loading/loading';
 import GestionZona from './pages/zona/GestionZona';
+import GestionPuerta from './pages/puertas/gestion_puertas';
 
 function App() {
   const {loadingSession } = useAuth();
@@ -29,6 +30,7 @@ function App() {
         } >
           <Route path="eventos" element={<GestionEventos />} />
           <Route path="zonas" element={<GestionZona />} />
+          <Route path="puertas" element={<GestionPuerta />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

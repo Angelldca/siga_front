@@ -9,8 +9,10 @@ import { useFetch } from "./useFetch";
 
 
 
-export function useModuleCrud(url: string, module:string,byBusiness=false,byDelete=false) {
-const { result, loading, handleFilter, data: dataFilter, setData: setDatafilter } = useDataTable(url+"/search"||"/api/evento/search",byBusiness,byDelete);
+export function useModuleCrud(url: string, module:string,byBusiness=false,byDelete=false,keySearchBusiness="") {
+  
+const { result, loading, handleFilter, 
+  data: dataFilter, setData: setDatafilter } = useDataTable(url+"/search"||"/api/evento/search",byBusiness,byDelete,keySearchBusiness);
  const {loading: loadingFetch, create, editFetch,deletListFetch,getByIdFetch, user,result: resultFetch } = useFetch(url||"/api/evento");
      const [data, setData] = useState<DataRow[]>([]);
       const [avaible, setAvaible] = useState<number>(0);
