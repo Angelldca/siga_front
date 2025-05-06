@@ -61,10 +61,11 @@ function GestionCiudadanos() {
   return (
     <div className="event-container">
        <ActionBtn 
-       module="Eventos" 
+       module="Personas" 
        avaible={avaible}
        createModule={()=>{
-        createModule(setEditingEvent)
+        //createModule(setEditingEvent)
+         window.open('/ciudadanos/admin', '_blank');
        }}
        editModule={()=>{
         editModule(setEditingEvent,true)
@@ -73,10 +74,14 @@ function GestionCiudadanos() {
        showDetail={()=>{
         showDetail(setDetailModuele)
        }}
+       asigElement={()=>{
+        console.log("Asignar perosnas a los puntos de control")
+       }}
        create={true}
        edit={true}
        deleteBtn={true}
        show={true}
+       asign={true}
        />
       <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
 

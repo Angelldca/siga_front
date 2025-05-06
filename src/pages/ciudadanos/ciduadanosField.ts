@@ -7,24 +7,23 @@ export const filtroEvent: FilterType = {
         values: [{
           value: "Nombre",
           key: "nombre"
-        }]
-      },
-      {
-        name: "criterio_2",
-        values: [{
-          value: "Rol institucional",
-          key: "rolinstitucional"
-        }]
-      },
-      {
-        name: "criterio_3",
-        values: [{
+        },{
           value: "Solapin",
           key: "solapin"
         },{
             value: "DNI",
             key: "carnetidentidad"
           }]
+      },
+      {
+        name: "criterio_2",
+        values: [{
+          value: "Rol institucional",
+          key: "rolinstitucional"
+        },{
+          value: "Area",
+          key: "area"
+        }]
       },
     ]
   }
