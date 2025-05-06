@@ -11,6 +11,7 @@ import Loading from './components/loading/loading';
 import GestionZona from './pages/zona/GestionZona';
 import GestionPuerta from './pages/puertas/gestion_puertas';
 import GestionCiudadanos from './pages/ciudadanos/gestion_ciudadanos';
+import CiudadanosAdmin from './pages/ciudadanosAdmin/CiudadanosAdmin';
 
 function App() {
   const {loadingSession } = useAuth();
@@ -24,6 +25,15 @@ function App() {
       <Routes>
        <Route  path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/ciudadanos/admin" element={
+          <PermissionRoute module="ADMINISTRACION" permission="GESTION-CIUDADANOS">
+            <CiudadanosAdmin/>
+          </PermissionRoute>
+        } >
+           <Route path="" element={
+            <h2>Aqui deberia tener la administracion de personas(crear, editar, asignar a puertas)</h2>
+           } />
+        </Route>
         <Route path="/dashboard" element={
           <PermissionRoute module="INICIO" permission="INICIAR_SESION">
             <Dashboard />
@@ -33,6 +43,7 @@ function App() {
           <Route path="zonas" element={<GestionZona />} />
           <Route path="puertas" element={<GestionPuerta />} />
           <Route path="ciudadanos" element={<GestionCiudadanos />} />
+         
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
