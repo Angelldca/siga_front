@@ -37,19 +37,21 @@ const CardAdmin = () => {
                     </div>
                 </Link>
             </Can>
-
+            <Can module="ADMINISTRACION" permission="GESTION-CIUDADANOS">
+                <Link className='' to="ciudadanos">
+                    <div className="card">
+                        <img src={people} className="img_card" />
+                        <p>Ciudadanos</p>
+                    </div>
+                </Link>
+            </Can>
             <Can module="CONTROL_ACCESO" permission="GESTION-ACCESO">
                 <div className="card">
                     <img src={plato} className="img_card" />
                     <p>Accesos</p>
                 </div>
             </Can>
-            <Can module="ADMINISTRACION" permission="GESTION-CIUDADANOS">
-                <div className="card">
-                    <img src={people} className="img_card" />
-                    <p>Ciudadanos</p>
-                </div>
-            </Can>
+
             <Can module="RESERVA" permission="GESTION-RESERVA">
                 <div className="card">
                     <img src={reserva} className="img_card" />
