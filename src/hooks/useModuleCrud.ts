@@ -107,7 +107,6 @@ const { result, loading, handleFilter,
       return;
     }
     const idsToDelete = Array.from(selectedIds);
-  
     deletListFetch(idsToDelete).then((res) => {
       if (res.error) {
         setAlert({
@@ -115,7 +114,6 @@ const { result, loading, handleFilter,
           message: res.error.errorMessage || `Error al eliminar el/los ${module.toLowerCase()}(s)`,
         });
       } else {
-        console.log("Mostrando el alert de exito")
         setAlert({
           type: "success",
           message: `${module}(s) eliminado(s) correctamente`,

@@ -119,7 +119,7 @@ const Table = ({
           <tr>
             {
               th_element.th.map((th, index) => (
-                <th key={index}>
+                <th key={index} className={th.type === "Check" ? "check-column" : ""}>
                   <div className='th-container'>
                     {
                       th.type === "Check" ?
@@ -177,7 +177,7 @@ const Table = ({
             data?.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {th_element.th.map((th, cellIndex) => (
-                  <td key={cellIndex}>
+                  <td key={cellIndex} className={th.type === "Check" ? "check-column" : ""}>
                     {th.type === "Check" ? (
                       <input
                         type="checkbox"
