@@ -1,0 +1,6 @@
+.person_admin_container{
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr;
+    gap: 2rem;
+    width: 100%;
+}

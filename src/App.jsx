@@ -12,6 +12,7 @@ import GestionZona from './pages/zona/GestionZona';
 import GestionPuerta from './pages/puertas/gestion_puertas';
 import GestionCiudadanos from './pages/ciudadanos/gestion_ciudadanos';
 import CiudadanosAdmin from './pages/ciudadanosAdmin/CiudadanosAdmin';
+import CiudadanosAction from './components/ciudadanos_action/CiudadanosAction';
 
 function App() {
   const {loadingSession } = useAuth();
@@ -31,7 +32,7 @@ function App() {
           </PermissionRoute>
         } >
            <Route path="" element={
-            <h2>Aqui deberia tener la administracion de personas(crear, editar, asignar a puertas)</h2>
+            <CiudadanosAction/>
            } />
         </Route>
         <Route path="/dashboard" element={
