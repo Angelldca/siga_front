@@ -68,7 +68,8 @@ function GestionCiudadanos() {
          window.open('/ciudadanos/admin', '_blank');
        }}
        editModule={()=>{
-        editModule(setEditingEvent,true)
+        //editModule(setEditingEvent,true)
+        window.open(`/ciudadanos/admin?id=${Array.from(selectedIds)[0]}`, '_blank');
        }}
        deleteModule={deleteModule}
        showDetail={()=>{

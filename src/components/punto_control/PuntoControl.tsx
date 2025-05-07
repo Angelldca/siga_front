@@ -1,31 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './PuntoControl.css'
 import FooterTable from "../footer-table/foter-table";
 import { useModuleCrud } from "../../hooks/useModuleCrud";
-import { PaginationInfo } from "../../utils/interfaces";
+import { DataFilter, PaginationInfo } from "../../utils/interfaces";
 import Filter from "../filter/filter";
-import { filtroPuerta } from "../../pages/puertas/puertaField";
+import { filtroPuntosControl } from "./putosControlPersonaField";
 
 
-interface PuntoControl {
+
+export interface PuntoControl {
     id: string;
     nombre: string;
+    zona:{
+        id:any;
+        nombre: string
+    }
 }
 
 interface Props {
     puntosDisponibles: PuntoControl[];
-    puntosAsignadosIniciales: string[]; // array de IDs
-    onChange: (selectedIds: string[]) => void;
+    puntosAsignadosIniciales: any[]; // array de IDs
+    onChange: (selectedIds: any[]) => void;
+    handleFilter:(params:any)=>void;
+    setDatafilter: (dataFilter: any) => void;
+    dataFilter:DataFilter;
 }
 
-const PuntosControlSelector = ({ puntosDisponibles, puntosAsignadosIniciales, onChange }: Props) => {
-    const [seleccionados, setSeleccionados] = useState<string[]>(puntosAsignadosIniciales);
- const {  result, loading,setAvaible,avaible,selectedIds,
-    handleSortChange,handlerCreate,handlerEdit,handlerDelete,editModule,
-  deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
-  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule,
-  isDetail, setIsDetail,showDetail} = useModuleCrud({
-    url:"/api/persona", module:"Ciudadano",byBusiness:true, byDelete:true});
+const PuntosControlSelector = ({ 
+    puntosDisponibles, puntosAsignadosIniciales,
+     onChange,handleFilter,
+     setDatafilter, dataFilter
+    }: Props) => {
+    const [seleccionados, setSeleccionados] = useState<any[]>(puntosAsignadosIniciales);
+ 
   const [metadata, setMetadata] = useState<PaginationInfo >({
     totalPages: 0,
     totalElementsPage: 0,
@@ -42,14 +49,21 @@ const PuntosControlSelector = ({ puntosDisponibles, puntosAsignadosIniciales, on
         setSeleccionados(nuevaSeleccion);
         onChange(nuevaSeleccion);
     };
-
+    useEffect(() => {
+        setSeleccionados(puntosAsignadosIniciales);
+    }, [puntosAsignadosIniciales]);
     return (
         <div className="puntos-selector">
             <h3>Puntos de control</h3>
-            <Filter filtros={filtroPuerta} onSubmit={values => handleFilter({ values })} />
+            <Filter filtros={filtroPuntosControl} onSubmit={values => handleFilter({ values })} />
 
             <ul>
-                {puntosDisponibles.map(punto => (
+                {
+                    !puntosDisponibles ? (
+                        <li className="no-data">No hay puntos de control disponibles</li>
+                    ):
+                
+                    puntosDisponibles.map(punto => (
                     <li key={punto.id}>
                         <label className="punto-control-label">
                             <input
@@ -57,7 +71,10 @@ const PuntosControlSelector = ({ puntosDisponibles, puntosAsignadosIniciales, on
                                 checked={seleccionados.includes(punto.id)}
                                 onChange={() => toggleSeleccion(punto.id)}
                             />
+                            <>
                             <p>{punto.nombre}</p>
+                            <p>Zona: {punto.zona.nombre}</p>
+                            </>
                         </label>
                     </li>
                 ))}
