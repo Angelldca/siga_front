@@ -3,6 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import './personaForm.css';
+import Alert from '../alert/alert';
+import defaultIcon from '../../assets/default_profile.png';
 
 interface PersonaFormValues {
     area: string;
@@ -19,36 +21,65 @@ interface PersonaFormValues {
     codigobarra: string;
     estado: boolean;
     empresaId: string;
-    fotoPerfil?: File | null;
+    fotoPerfil?: Blob | null;
 }
 
-interface PersonaFormProps {
-    initialValues?: Partial<PersonaFormValues>;
+export interface PersonaFormProps {
+    initialValues?:{
+        persona:  Partial<PersonaFormValues>,
+        foto:Blob,
+        id:any
+    };
     onSubmit: (values: PersonaFormValues) => void;
     empresaId: string;
+    alert:{ type: string, message: string }|null;
+    setAlert: ( values:{ type: string, message: string }|null) => void;
 }
 
-const PersonaForm = ({ initialValues = {}, onSubmit, empresaId }: PersonaFormProps) => {
+const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: PersonaFormProps) => {
     const [values, setValues] = useState<PersonaFormValues>({
-        area: initialValues.area || '',
-        rolinstitucional: initialValues.rolinstitucional || '',
-        nombre: initialValues.nombre || '',
-        solapin: initialValues.solapin || '',
-        carnetidentidad: initialValues.carnetidentidad || '',
-        provincia: initialValues.provincia || '',
-        municipio: initialValues.municipio || '',
-        sexo: initialValues.sexo || '',
-        residente: initialValues.residente ?? true,
-        fechanacimiento: initialValues.fechanacimiento || '',
-        idexpediente: initialValues.idexpediente || '',
-        codigobarra: initialValues.codigobarra || '',
-        estado: initialValues.estado || true,
+        area: initialValues?.persona.area || '',
+        rolinstitucional: initialValues?.persona.rolinstitucional || '',
+        nombre: initialValues?.persona.nombre || '',
+        solapin: initialValues?.persona.solapin || '',
+        carnetidentidad: initialValues?.persona.carnetidentidad || '',
+        provincia: initialValues?.persona.provincia || '',
+        municipio: initialValues?.persona.municipio || '',
+        sexo: initialValues?.persona.sexo || '',
+        residente: initialValues?.persona.residente ?? true,
+        fechanacimiento: initialValues?.persona.fechanacimiento || '',
+        idexpediente: initialValues?.persona.idexpediente || '',
+        codigobarra: initialValues?.persona.codigobarra || '',
+        estado: initialValues?.persona.estado || true,
         empresaId: empresaId,
-        fotoPerfil: null
+        fotoPerfil: initialValues?.foto
     });
 
+    useEffect(()=>{
+        if (!initialValues) return;
+        setValues(
+            {
+                area: initialValues?.persona.area || '',
+                rolinstitucional: initialValues?.persona.rolinstitucional || '',
+                nombre: initialValues?.persona.nombre || '',
+                solapin: initialValues?.persona.solapin || '',
+                carnetidentidad: initialValues?.persona.carnetidentidad || '',
+                provincia: initialValues?.persona.provincia || '',
+                municipio: initialValues?.persona.municipio || '',
+                sexo: initialValues?.persona.sexo || '',
+                residente: initialValues?.persona.residente ?? true,
+                fechanacimiento: initialValues?.persona.fechanacimiento || '',
+                idexpediente: initialValues?.persona.idexpediente || '',
+                codigobarra: initialValues?.persona.codigobarra || '',
+                estado: initialValues?.persona.estado || true,
+                empresaId: empresaId,
+                fotoPerfil: initialValues?.foto
+            }
+        )
+        setFotoUrl(`data:image/jpeg;base64,${initialValues?.foto}`)
+    },[initialValues])
     const [generarCodigo, setGenerarCodigo] = useState(false);
-    const [fotoUrl, setFotoUrl] = useState<string | undefined>(undefined);
+    const [fotoUrl, setFotoUrl] = useState<string | undefined>(defaultIcon);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -69,8 +100,14 @@ const PersonaForm = ({ initialValues = {}, onSubmit, empresaId }: PersonaFormPro
     const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setValues(prev => ({ ...prev, fotoPerfil: file }));
-            setFotoUrl(URL.createObjectURL(file));
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64WithPrefix = reader.result as string;
+                //const base64Data = base64WithPrefix.split(',')[1]; 
+                setFotoUrl(base64WithPrefix); 
+                setValues(prev => ({ ...prev, fotoPerfil: file }));
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -89,7 +126,7 @@ const PersonaForm = ({ initialValues = {}, onSubmit, empresaId }: PersonaFormPro
 
     return (
         <form className="persona-form" onSubmit={handleSubmit}>
-            <h3>{initialValues.nombre ? 'Editar Persona' : 'Crear Persona'}</h3>
+            <h3>{initialValues?.persona.nombre ? 'Editar Persona' : 'Crear Persona'}</h3>
 
             <div className="foto-perfil">
                 <img src={fotoUrl || '/default-profile.png'} alt="Foto perfil" className="foto-preview" />
@@ -186,6 +223,16 @@ const PersonaForm = ({ initialValues = {}, onSubmit, empresaId }: PersonaFormPro
                 <button type="submit" className='btn-primary'>Guardar</button>
                 <button type="button" onClick={() => window.close()} className='btn-secondary'>Cancelar</button>
             </div>
+             {alert && (
+                          <Alert
+                            type={alert.type}
+                            message={alert.message}
+                            onClose={() => setAlert(null)
+                            
+                            }
+                         
+                          />
+                        )}
         </form>
     );
 };

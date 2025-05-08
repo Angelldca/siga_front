@@ -22,10 +22,14 @@
     margin: 0;
     height: 40vh;
     overflow-y: scroll;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .puntos-selector li {
     margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
 }
 
 .punto-control-label{
