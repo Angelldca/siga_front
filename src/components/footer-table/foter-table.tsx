@@ -99,7 +99,7 @@ const FooterTable: React.FC<FooterTableProps> = ({
         </select>
   
         <p className="total-footer-table">
-          Total registros: {paginate.totalElements}
+          Total: {paginate.totalElements}
         </p>
       </div>
     );

@@ -5,6 +5,7 @@ import './CiudadanosAction.css';
 import { useModuleCrud } from "../../hooks/useModuleCrud";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
+import { PaginationInfo } from "../../utils/interfaces";
 
 const CiudadanosAction = () => {
     const empresaId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
@@ -31,10 +32,26 @@ const CiudadanosAction = () => {
         foto:Blob,
         id:any
     }|undefined>(undefined);
+    const [metadata, setMetadata] = useState<PaginationInfo >({
+        totalPages: 0,
+        totalElementsPage: 0,
+        totalElements: 0,
+        size: 0,
+        page: 0,
+      });
 
       useEffect(() => {
         if(loading) return;
           setListControl(result.data);
+          const { totalPages, totalElementsPage, totalElements, size, page } = result;
+          setMetadata({
+            totalPages,
+            totalElementsPage,
+            totalElements,
+            size,
+            page,
+          });
+        
       },[result.data])
 
       useEffect(() => {
@@ -103,6 +120,7 @@ const CiudadanosAction = () => {
                     dataFilter={dataFilter}
                     setDatafilter={setDatafilter}
                     handleFilter={handleFilter}
+                    metadata={metadata}
                     />
                 )
             }
