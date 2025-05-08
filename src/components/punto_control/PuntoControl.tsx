@@ -24,22 +24,16 @@ interface Props {
     handleFilter:(params:any)=>void;
     setDatafilter: (dataFilter: any) => void;
     dataFilter:DataFilter;
+    metadata: PaginationInfo;
 }
 
 const PuntosControlSelector = ({ 
     puntosDisponibles, puntosAsignadosIniciales,
      onChange,handleFilter,
-     setDatafilter, dataFilter
+     setDatafilter, dataFilter,metadata
     }: Props) => {
     const [seleccionados, setSeleccionados] = useState<any[]>(puntosAsignadosIniciales);
  
-  const [metadata, setMetadata] = useState<PaginationInfo >({
-    totalPages: 0,
-    totalElementsPage: 0,
-    totalElements: 0,
-    size: 0,
-    page: 0,
-  });
 
 
     const toggleSeleccion = (id: string) => {
@@ -52,6 +46,10 @@ const PuntosControlSelector = ({
     useEffect(() => {
         setSeleccionados(puntosAsignadosIniciales);
     }, [puntosAsignadosIniciales]);
+    useEffect(() => {
+        if (!puntosDisponibles) return;
+        
+    }, [puntosDisponibles]);
     return (
         <div className="puntos-selector">
             <h3>Puntos de control</h3>
