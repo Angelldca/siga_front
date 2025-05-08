@@ -61,7 +61,7 @@ export function useDataTable({
     }
 
     const pf = params.paginatedFilter;
-
+    list = true
     setData({
       filter: filterValues,
       query: pf?.query ?? "",
