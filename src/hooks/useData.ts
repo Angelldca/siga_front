@@ -91,7 +91,7 @@ export function useDataTable({
         setError(err);
       } finally {
         setLoading(false);
-        setShouldFetch(false);
+        //setShouldFetch(false);
       }
     };
   

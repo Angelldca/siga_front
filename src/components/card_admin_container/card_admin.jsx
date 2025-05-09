@@ -24,7 +24,7 @@ const CardAdmin = () => {
                 <Link className='' to="zonas">
                     <div className="card">
                         <img src={menu} className="img_card" />
-                        <p>Zonas</p>
+                        <p>Areas</p>
                     </div>
                 </Link>
             </Can>
@@ -42,6 +42,24 @@ const CardAdmin = () => {
                     <div className="card">
                         <img src={people} className="img_card" />
                         <p>Ciudadanos</p>
+                    </div>
+                </Link>
+            </Can>
+            <Can module="ADMINISTRACION" permission="GESTION-PLATO">
+                <Link className='' to="platos">
+                    <div className="card">
+                        <img src={comedor} className="img_card" />
+                        <p>Platos</p>
+
+                    </div>
+                </Link>
+            </Can>
+            <Can module="ADMINISTRACION" permission="GESTION-MENU">
+                <Link className='' to="menu">
+                    <div className="card">
+                        <img src={menu} className="img_card" />
+                        <p>Menu</p>
+
                     </div>
                 </Link>
             </Can>

@@ -3,7 +3,7 @@
 
 
 import Filter from "../../components/filter/filter";
-import "./GestionZona.css"
+//import "./GestionPuerta.css"
 
 
 import Table from "../../components/table/table";
@@ -11,7 +11,7 @@ import Table from "../../components/table/table";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "../../components/loading/loading";
 
-import { filtroEvent, th_elementEvent } from "./zonaField";
+import { filtroPuerta, th_elementPuerta } from "./platoField";
 
 import ActionBtn from "../../components/action_btn/actionBtn";
 
@@ -22,18 +22,23 @@ import { useModuleCrud } from "../../hooks/useModuleCrud";
 import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
 import ZonaForm, { ZonaFormValues } from "../../components/zona_form/zona_form";
+import PuertaForm from "../../components/PuertaForm/PuertaForm";
+import PlatoForm from "../../components/platoForm/PlatoForm";
 
 
 
-function GestionZona() {
+function GestionPlato() {
   const { result, loading, setAvaible, avaible, selectedIds,
     handleSortChange, handlerDelete, editModule,
     deleteModule, handleSelectOne, handleSelectAll, sortConfig, setDatafilter, isModalOpen, alert,
     setAlert, isDelete, setModalOpen, setIsDelete, handleFilter, data, setData, dataFilter, createModule,
-    setIsDetail } = useModuleCrud({url:"/api/zona", module:"Area", byBusiness:true, byDelete:true,list:true});
-  const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
+    setIsDetail } = useModuleCrud({url:"/api/plato", module:"Plato", 
+      byBusiness:true, byDelete:true});
+  
+  
+    const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
     setAlert:setalertZonaEvento } = useModuleCrud({
-      url:"/api/zona-evento", module:"Area",byBusiness:false,byDelete:false,list:false});
+      url:"/api/plato", module:"Plato",byBusiness:true, byDelete:true,list:false});
 
   const [editingEvent, setEditingEvent] = useState<Partial<ZonaFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo>({
@@ -56,6 +61,7 @@ function GestionZona() {
       });
     }
   }, [loading, result.data]);
+  
   useMemo(() => {
     handleFilter({ filterValues: [] });
   }, [resultZonaEvento.data])
@@ -76,7 +82,7 @@ function GestionZona() {
 
       <div className="event-container">
         <ActionBtn
-          module="Zona"
+          module="Puntos de control"
           avaible={avaible}
           create={false}
           edit={false}
@@ -84,14 +90,14 @@ function GestionZona() {
           show={false}
           deleteModule={deleteModule}
         />
-        <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
+        <Filter filtros={filtroPuerta} onSubmit={values => handleFilter({ values })} />
 
         {loading ? (
           <Loading />
         ) : (
 
           <Table
-            th_element={th_elementEvent}
+            th_element={th_elementPuerta}
             data={data}
             selectedIds={selectedIds}
             onSelectOne={handleSelectOne}
@@ -101,13 +107,9 @@ function GestionZona() {
             setDatafilter={setDatafilter}
           />
         )}
-        <FooterTable 
-        setDatafilter={setDatafilter}
-        dataFilter={dataFilter} 
-        paginate={metadata} 
-        />
+        <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata} />
         <Modal isOpen={isModalOpen} onClose={() => { setModalOpen(false); setEditingEvent(null); setIsDelete(false); setIsDetail(false) }}>
-          {alert && (
+          {alert &&(
             <Alert
               type={alert.type}
               message={alert.message}
@@ -123,7 +125,7 @@ function GestionZona() {
       </div>
       <div className="form-container-zona">
         <div className="zona-alert-cntainer">
-          <ZonaForm
+          <PlatoForm
             initialValues={editingEvent || undefined}
             onSubmit={editingEvent ? handlerEdit : handlerCreate}
             onClose={() => { setModalOpen(false); setEditingEvent(null); }}
@@ -143,5 +145,5 @@ function GestionZona() {
   );
 }
 
-export default GestionZona;
+export default GestionPlato;
 

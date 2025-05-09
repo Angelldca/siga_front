@@ -25,13 +25,10 @@ import EventDetail from "../../components/event_detail/event-detail";
 
 function GestionCiudadanos() {
  const {  result, loading,setAvaible,avaible,selectedIds,
-    handleSortChange,handlerCreate,handlerEdit,handlerDelete,editModule,
+    handleSortChange,handlerDelete,
   deleteModule,handleSelectOne,handleSelectAll,sortConfig,setDatafilter,isModalOpen,alert,
-  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter,createModule,
-  isDetail, setIsDetail,showDetail} = useModuleCrud({
+  setAlert,isDelete,setModalOpen,setIsDelete,handleFilter,data,setData,dataFilter, setIsDetail} = useModuleCrud({
     url:"/api/persona", module:"Ciudadano",byBusiness:true, byDelete:true});
-  const [editingEvent, setEditingEvent] = useState<Partial<EventFormValues> | null>(null);
-  const [detailModule, setDetailModuele] = useState<Partial<EventFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo >({
     totalPages: 0,
     totalElementsPage: 0,
@@ -72,17 +69,11 @@ function GestionCiudadanos() {
         window.open(`/ciudadanos/admin?id=${Array.from(selectedIds)[0]}`, '_blank');
        }}
        deleteModule={deleteModule}
-       showDetail={()=>{
-        showDetail(setDetailModuele)
-       }}
-       asigElement={()=>{
-        console.log("Asignar perosnas a los puntos de control")
-       }}
        create={true}
        edit={true}
        deleteBtn={true}
-       show={true}
-       asign={true}
+       show={false}
+       asign={false}
        />
       <Filter filtros={filtroEvent} onSubmit={values => handleFilter({ values })} />
 
@@ -102,7 +93,7 @@ function GestionCiudadanos() {
         />
       )}
       <FooterTable setDatafilter={setDatafilter} dataFilter={dataFilter} paginate={metadata}/>
-     <Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false);setEditingEvent(null); setIsDelete(false); setIsDetail(false)}}>
+     <Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false); setIsDelete(false); setIsDetail(false)}}>
       {alert && (
               <Alert
                 type={alert.type}
@@ -113,21 +104,10 @@ function GestionCiudadanos() {
              
               />
             )}
-        {isDelete ? 
+        {isDelete && 
         <DeleteAlert module="elementos seleccionados" 
         handlerDelete={handlerDelete}
         onClose={() => { setModalOpen(false); setIsDelete(false); setIsDetail(false)}} />
-        : isDetail ? 
-        <EventDetail result={detailModule} onEdit={()=>{
-          setModalOpen(false); setIsDelete(false); setIsDetail(false);
-          editModule(setEditingEvent,true)
-         }}/>
-        :
-        <EventForm
-        initialValues={editingEvent || undefined}
-        onSubmit={editingEvent ? handlerEdit : handlerCreate}
-        onClose={() => { setModalOpen(false); setEditingEvent(null); }}
-        />
         }
       </Modal>
     </div>

@@ -81,7 +81,7 @@ function GestionPuerta() {
 
       <div className="event-container">
         <ActionBtn
-          module="Zona"
+          module="Puntos de control"
           avaible={avaible}
           create={false}
           edit={false}
