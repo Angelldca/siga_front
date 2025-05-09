@@ -116,15 +116,11 @@ const PersonaForm = ({ initialValues, onSubmit,alert,setAlert }: PersonaFormProp
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const finalValues = {
-            ...values,
-            codigobarra: generarCodigo ? generarCodigoBarras() : values.codigobarra
+            ...values
         };
         onSubmit(finalValues);
     };
 
-    const generarCodigoBarras = () => {
-        return 'CB' + Math.floor(Math.random() * 1000000);
-    };
 
     return (
         <form className="persona-form" onSubmit={handleSubmit}>

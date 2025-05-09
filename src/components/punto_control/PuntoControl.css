@@ -9,9 +9,12 @@
     min-height: 50vh;
     overflow-y: auto;
     margin: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
 }
 
 .puntos-selector h3 {
+ 
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
@@ -36,4 +39,15 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.puntos-control-action{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.puntos-control-action button:hover{
+    background-color: var(--color-primary);
+    transform: scale(1.05);
 }
