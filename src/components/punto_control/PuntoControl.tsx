@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import './PuntoControl.css'
 import FooterTable from "../footer-table/foter-table";
-import { useModuleCrud } from "../../hooks/useModuleCrud";
 import { DataFilter, PaginationInfo } from "../../utils/interfaces";
 import Filter from "../filter/filter";
 import { filtroPuntosControl } from "./putosControlPersonaField";

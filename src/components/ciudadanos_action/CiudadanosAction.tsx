@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import PersonaForm, { PersonaFormProps, PersonaFormValues } from "../personaForm/personaForm";
+import PersonaForm, { PersonaFormValues } from "../personaForm/personaForm";
 import PuntosControlSelector, { PuntoControl } from "../punto_control/PuntoControl";
 import './CiudadanosAction.css';
 import { useModuleCrud } from "../../hooks/useModuleCrud";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import { PaginationInfo } from "../../utils/interfaces";
 
@@ -16,10 +16,10 @@ const CiudadanosAction = () => {
         handleFilter:handleFilterPuertaPersona} = useModuleCrud({url:"/api/puerta-persona", module:"Puerta-Persona", 
          byBusiness:false,list:false});
 
-    const {alert,setAlert,handlerCreate,handlerEdit,result:resultPerson} = useModuleCrud({url:"/api/persona", module:"Persona", 
+    const {alert,setAlert} = useModuleCrud({url:"/api/persona", module:"Persona", 
              byBusiness:false,list:false});
 
-    const {user,loading: loadingFetch, create:createImage, editFetch:editImage,deletListFetch,getByIdFetch,result: resultFetch } = useFetch("/api/imagen-facial");
+    const {user, create:createImage, editFetch:editImage,getByIdFetch } = useFetch("/api/imagen-facial");
     const { create:createPersona, editFetch:editFetchPerson,getByIdFetch:getByIdFetchPerson } = useFetch("/api/persona");
     const [searchParams] = useSearchParams();
       const [listControl, setListControl] = useState<PuntoControl[]>([]);

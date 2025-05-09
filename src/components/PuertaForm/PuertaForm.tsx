@@ -29,7 +29,7 @@ const PuertaForm = ({
     onSubmit,
     onClose,
 }: PropsForm) => {
-    const {result } = useDataTable("/api/zona/search",true,true,"", 100000);
+    const {result } = useDataTable({url:"/api/zona/search",byBusiness:true,byDelete:true, pageSize:100000});
     const [nombre, setNombre] = useState(initialValues.nombre || "");
     const [zonasDisponibles, setZonasDisponibles] = useState<OptionType[]>([]);
     const [zonaSeleccionada, setZonaSeleccionada] = useState<OptionType | null>(null);

@@ -27,7 +27,7 @@ export function useModuleCrud({
   list= true,
 }: UseDataParams) {
   
-const { result, loading, handleFilter, 
+const { result, loading, handleFilter,
   data: dataFilter, setData: setDatafilter } = useDataTable({
     url:url+"/search",
     byBusiness:byBusiness,byDelete:byDelete,keySearchBusiness:keySearchBusiness,
