@@ -37,17 +37,18 @@ export function useDataTable({
   const [result, setResult] = useState<any>({});
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [shouldFetch, setShouldFetch] = useState(list);
   const [data, setData] = useState<DataFilter>({
     filter: [],
     query: "",
     pageSize: pageSize,
     page: 0,
     sortBy: "createdAt",
-    sortType: "DES",
+    sortType: "ASC",
   });
   const handleFilter = (params: HandleFilterParams) => {
+    list = true;
     let filterValues: CriteriaFilter[];
-
     if ("filterValues" in params) {
       filterValues = params.filterValues;
     } else {
@@ -61,40 +62,41 @@ export function useDataTable({
     }
 
     const pf = params.paginatedFilter;
-    list = true
+  
     setData({
       filter: filterValues,
-      query: pf?.query ?? "",
-      pageSize: pf?.pageSize ?? 10,
-      page: pf?.page ?? 0,
-      sortBy: pf?.sortBy ?? "createdAt",
-      sortType: pf?.sortType ?? "DES",
+      query: pf?.query || "",
+      pageSize: pf?.pageSize || 10,
+      page: pf?.page || 0,
+      sortBy: pf?.sortBy || "createdAt",
+      sortType: pf?.sortType || "DES",
     });
+    setShouldFetch(true);
   };
   useEffect(() => {
-    if (loadingSession || !list) return;
+    if (loadingSession || !shouldFetch) return;
+  
     setLoading(true);
-    if (!byBusiness) {
-      search(data, token || "", url, user)
-        .then((res) => {
-          setResult(res)
-        }).catch((err) => {
-          setError(err)
-        }).finally(() => {
-          setLoading(false);
-        })
-
-    }else{
-      searchByBusiness(data, token || "", url, user,byDelete,keySearchBusiness)
-        .then((res) => {
-          setResult(res)
-        }).catch((err) => {
-          setError(err)
-        }).finally(() => {
-          setLoading(false);
-        })
-    }
-  }, [data])
+  
+    const fetchData = async () => {
+      try {
+        let res;
+        if (!byBusiness) {
+          res = await search(data, token || "", url, user);
+        } else {
+          res = await searchByBusiness(data, token || "", url, user, byDelete, keySearchBusiness);
+        }
+        setResult(res);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+        setShouldFetch(false);
+      }
+    };
+  
+    fetchData();
+  }, [data, shouldFetch]);
 
   return {
     data,
