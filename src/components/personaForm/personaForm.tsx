@@ -6,7 +6,7 @@ import './personaForm.css';
 import Alert from '../alert/alert';
 import defaultIcon from '../../assets/default_profile.png';
 
-interface PersonaFormValues {
+export interface PersonaFormValues {
     area: string;
     rolinstitucional: string;
     nombre: string;
@@ -19,44 +19,43 @@ interface PersonaFormValues {
     fechanacimiento: string;
     idexpediente: string;
     codigobarra: string;
-    estado: boolean;
-    empresaId: string;
-    fotoPerfil?: Blob | null;
+    estado: string;
+    fotoPerfil?: string | null;
 }
 
 export interface PersonaFormProps {
     initialValues?:{
         persona:  Partial<PersonaFormValues>,
-        foto:Blob,
+        foto:string,
         id:any
     };
     onSubmit: (values: PersonaFormValues) => void;
-    empresaId: string;
     alert:{ type: string, message: string }|null;
     setAlert: ( values:{ type: string, message: string }|null) => void;
 }
 
-const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: PersonaFormProps) => {
+const PersonaForm = ({ initialValues, onSubmit,alert,setAlert }: PersonaFormProps) => {
     const [values, setValues] = useState<PersonaFormValues>({
-        area: initialValues?.persona.area || '',
-        rolinstitucional: initialValues?.persona.rolinstitucional || '',
-        nombre: initialValues?.persona.nombre || '',
-        solapin: initialValues?.persona.solapin || '',
-        carnetidentidad: initialValues?.persona.carnetidentidad || '',
-        provincia: initialValues?.persona.provincia || '',
-        municipio: initialValues?.persona.municipio || '',
-        sexo: initialValues?.persona.sexo || '',
-        residente: initialValues?.persona.residente ?? true,
-        fechanacimiento: initialValues?.persona.fechanacimiento || '',
-        idexpediente: initialValues?.persona.idexpediente || '',
-        codigobarra: initialValues?.persona.codigobarra || '',
-        estado: initialValues?.persona.estado || true,
-        empresaId: empresaId,
-        fotoPerfil: initialValues?.foto
+        area: '',
+        rolinstitucional:  '',
+        nombre:  '',
+        solapin: '',
+        carnetidentidad: '',
+        provincia: '',
+        municipio:'',
+        sexo: '',
+        residente: true,
+        fechanacimiento:  '',
+        idexpediente:  '',
+        codigobarra: '',
+        estado:  "ACTIVO",
+        fotoPerfil: ""
     });
 
     useEffect(()=>{
-        if (!initialValues) return;
+  
+        if (!initialValues?.persona) return;
+        
         setValues(
             {
                 area: initialValues?.persona.area || '',
@@ -71,12 +70,15 @@ const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: Pers
                 fechanacimiento: initialValues?.persona.fechanacimiento || '',
                 idexpediente: initialValues?.persona.idexpediente || '',
                 codigobarra: initialValues?.persona.codigobarra || '',
-                estado: initialValues?.persona.estado || true,
-                empresaId: empresaId,
+                estado: initialValues?.persona.estado || "ACTIVO",
                 fotoPerfil: initialValues?.foto
             }
         )
-        setFotoUrl(`data:image/jpeg;base64,${initialValues?.foto}`)
+
+        if(initialValues?.foto){
+            setFotoUrl(`data:image/jpeg;base64,${initialValues?.foto}`)
+        }
+            
     },[initialValues])
     const [generarCodigo, setGenerarCodigo] = useState(false);
     const [fotoUrl, setFotoUrl] = useState<string | undefined>(defaultIcon);
@@ -87,7 +89,7 @@ const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: Pers
             const checked = (e.target as HTMLInputElement).checked;
             setValues(prev => ({
                 ...prev,
-                [name]: checked
+                [name]: name === 'estado' ? (checked ? 'ACTIVO' : 'INACTIVO') : checked
             }));
         } else {
             setValues(prev => ({
@@ -103,9 +105,9 @@ const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: Pers
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64WithPrefix = reader.result as string;
-                //const base64Data = base64WithPrefix.split(',')[1]; 
+                //const base64Data = base64WithPrefix.split(',')[1];
                 setFotoUrl(base64WithPrefix); 
-                setValues(prev => ({ ...prev, fotoPerfil: file }));
+                setValues(prev => ({ ...prev, fotoPerfil: base64WithPrefix.split(',')[1] }));
             };
             reader.readAsDataURL(file);
         }
@@ -126,7 +128,7 @@ const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: Pers
 
     return (
         <form className="persona-form" onSubmit={handleSubmit}>
-            <h3>{initialValues?.persona.nombre ? 'Editar Persona' : 'Crear Persona'}</h3>
+            <h3>{initialValues?.persona ? 'Editar Persona' : 'Crear Persona'}</h3>
 
             <div className="foto-perfil">
                 <img src={fotoUrl || '/default-profile.png'} alt="Foto perfil" className="foto-preview" />
@@ -214,7 +216,7 @@ const PersonaForm = ({ initialValues, onSubmit, empresaId,alert,setAlert }: Pers
                 </label>
 
                 <label>
-                    <input type="checkbox" name="estado" checked={values.estado === true} onChange={handleChange} />
+                    <input type="checkbox" name="estado" checked={values.estado === "ACTIVO"} onChange={handleChange} />
                     Activo
                 </label>
             </div>
