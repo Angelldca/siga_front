@@ -3,7 +3,7 @@ import PersonaForm, { PersonaFormProps, PersonaFormValues } from "../personaForm
 import PuntosControlSelector, { PuntoControl } from "../punto_control/PuntoControl";
 import './CiudadanosAction.css';
 import { useModuleCrud } from "../../hooks/useModuleCrud";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import { PaginationInfo } from "../../utils/interfaces";
 
@@ -24,6 +24,7 @@ const CiudadanosAction = () => {
     const [searchParams] = useSearchParams();
       const [listControl, setListControl] = useState<PuntoControl[]>([]);
       const [selectedPuntos, setSelectedPuntos] = useState<any[]>([]);
+      const navigate = useNavigate();
       const [personaId,setPersonaId] = useState<string|null>(searchParams.get('id'));
       const [initialValues, setInitialValues] = useState<{
         persona:  Partial<PersonaFormValues>,
@@ -197,6 +198,8 @@ const CiudadanosAction = () => {
                 message: res.error.errorMessage || `Error al crear la persona`,
               });
             } else {
+              setPersonaId(res.id)
+              navigate(`?id=${res.id}`, { replace: true });
               if(!values.fotoPerfil){
                 setAlert({
                   type: "success",
@@ -258,6 +261,7 @@ const CiudadanosAction = () => {
                     setDatafilter={setDatafilter}
                     handleFilter={handleFilterPuerta}
                     metadata={metadata}
+                    personaId={initialValues?.id}
                     />
                 )
             }
