@@ -37,7 +37,9 @@ const Table = ({
     setOpenFilterFor(prev => (prev === key ? null : key));
   };
 
-
+  const getValueFromPath = (obj: any, path: string) => {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  };
   const handleSort = (key: string) => {
     let nextOrder: SortConfig["order"];
     if (sortConfig.key !== key) nextOrder = "ASC";
@@ -192,7 +194,7 @@ const Table = ({
                     ) : th.type === "Action" ? (
                       children
                     ) : (
-                      row[th.key] ?? ""
+                      getValueFromPath(row, th.key) ?? ""
                     )}
                   </td>
                 ))}

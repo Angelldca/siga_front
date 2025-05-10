@@ -14,6 +14,7 @@ import GestionCiudadanos from './pages/ciudadanos/gestion_ciudadanos';
 import CiudadanosAdmin from './pages/ciudadanosAdmin/CiudadanosAdmin';
 import CiudadanosAction from './components/ciudadanos_action/CiudadanosAction';
 import GestionPlato from './pages/platos/GestionPlatos';
+import GestionMenu from './pages/menus/GestioMenu';
 
 function App() {
   const {loadingSession } = useAuth();
@@ -46,7 +47,7 @@ function App() {
           <Route path="puertas" element={<GestionPuerta />} />
           <Route path="ciudadanos" element={<GestionCiudadanos />} />
           <Route path="platos" element={<GestionPlato />} />
-          <Route path="menu" element={<GestionCiudadanos />} />
+          <Route path="menu" element={<GestionMenu />} />
          
         </Route>
         <Route path="*" element={<NotFound />} />
