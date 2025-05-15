@@ -22,6 +22,7 @@ export interface MenuFormValues {
     eventoId: string;
     platosId: string[];
     disponible: boolean;
+    fecha:any
 }
 interface PropsForm {
     initialValues?: Partial<MenuFormValues>;
@@ -43,6 +44,8 @@ const MenuForm = ({
     const [eventosSeleccionados, setEventosSeleccionados] = useState<OptionType | null>(null);
     const [platosDisponibles, setPlatosDisponibles] = useState<OptionType[]>([]);
     const [platosSeleccionados, setPlatosSeleccionados] = useState<OptionType[]>([]);
+    const [fecha, setFecha] = useState(initialValues.fecha || "");
+    const [disponible, setDisponible] = useState(false);
     // Cargar eventos disponibles
 
     useEffect(()=>{
@@ -74,7 +77,7 @@ const MenuForm = ({
         if (resultPlatos?.data) {
             const mappedOptions = resultPlatos.data.map((e: any) => ({
                 value: e.id.toString(),
-                label: e.nombre,
+                label: e.nombre +"" +`(${e.medida})`,
             }));
             setPlatosDisponibles(mappedOptions);
         }
@@ -110,6 +113,8 @@ const MenuForm = ({
             value: initialValues.evento?.id.toString(),
             label: initialValues.evento?.nombre,
           });
+          setFecha(initialValues.fecha)
+          setDisponible(initialValues.disponible||true)
       
           const platosIds = resultMenuEvento.data.flatMap((item: any) =>
             (item.menu?.platos || []).map((plato: any) => plato.id.toString())
@@ -135,7 +140,8 @@ const MenuForm = ({
             eventoId: eventosSeleccionados.value,
             platosId: platosFinales.map(e => e.id),
             disponible:true,
-            evento:null
+            evento:null,
+            fecha:fecha
         });
     };
 
@@ -170,6 +176,26 @@ const MenuForm = ({
                     placeholder="Selecciona platos..."
                     noOptionsMessage={() => "No hay platos disponibles"}
                 />
+            </div>
+            <div className="form-group">
+                    <label htmlFor="fecha">Fecha</label>
+                    <input
+                        type="date"
+                        id="fecha"
+                        value={fecha}
+                        onChange={e => setFecha(e.target.value)}
+                        required
+                    />
+            </div>
+            <div className="form-group form-froup-last-child">
+                <input
+                    type="checkbox" 
+                    name="disponible" 
+                    checked={disponible} 
+                    onChange={(e) => 
+                    {setDisponible(e.target.checked)}} 
+                    />
+                 <label>Disponible</label>
             </div>
             <button type="submit" className="btn-primary">Guardar</button>
         </form>
