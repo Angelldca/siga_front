@@ -188,7 +188,7 @@ const Table = ({
                         onChange={() => onSelectOne(row.id)}
                       />
                     ) : th.type === "Boolean" ? (
-                      row[th.key] === true ?
+                        getValueFromPath(row, th.key) === true ?
                         <p className='success-p'>Si</p>
                         : <p className='error-p'>No</p>
                     ) : th.type === "Action" ? (

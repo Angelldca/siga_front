@@ -5,7 +5,6 @@ import "./ZonaForm.css"
 import { useDataTable } from "../../hooks/useData";
 import Select from "react-select";
 import { MultiValue } from "react-select";
-import { useAuth } from "../../context/AuthContext";
 
 type OptionType = {
     value: string;
@@ -30,7 +29,8 @@ const ZonaForm = ({
     onSubmit,
     onClose,
 }: PropsForm) => {
-    const {result } = useDataTable({url:"/api/evento/search",byBusiness:true, pageSize:100000});
+    const {result } = useDataTable({url:"/api/evento/search",byBusiness:true,byDelete:true, pageSize:100000});
+
     const { handleFilter: handleFilterZonaEvento, result: resultZonaEvento } = useDataTable({url:"/api/zona-evento/search",byBusiness:false});
 
     const [nombre, setNombre] = useState(initialValues.nombre || "");

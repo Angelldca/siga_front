@@ -24,11 +24,6 @@ export const filtroMenu: FilterType = {
         value: "",
         type: "Check",
         key: "check"
-      }, 
-      {
-        value: "#",
-        type: "Text",
-         key: "menu.id"
       },{
         value: "Evento",
         type: "Text",
