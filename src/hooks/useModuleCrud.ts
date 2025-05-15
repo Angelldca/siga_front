@@ -77,7 +77,7 @@ const { result, loading, handleFilter,
         setAlert({ type: "error", message: `Selecciona un solo ${module.toLowerCase()} para editar.` });
         return;
       }
-      const idToEdit = Array.from(selectedIds)[0];
+      const idToEdit = value.id || Array.from(selectedIds)[0];
       if (!idToEdit) return;
       setModalOpen(true);
       editFetch(idToEdit,value).then((res) => {

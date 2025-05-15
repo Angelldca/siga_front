@@ -22,6 +22,7 @@ import { useModuleCrud } from "../../hooks/useModuleCrud";
 import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
 import ZonaForm, { ZonaFormValues } from "../../components/zona_form/zona_form";
+import MenuForm, { MenuFormValues } from "../../components/menuForm/MenuForm";
 
 
 
@@ -35,9 +36,9 @@ function GestionMenu() {
         byBusiness:true, byDelete:false,list:true});
   const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
     setAlert:setalertZonaEvento } = useModuleCrud({
-      url:"/api/menu-evento", module:"Menu",byBusiness:false,byDelete:false,list:false});
+      url:"/api/menu", module:"Menu",byBusiness:false,byDelete:false,list:false});
 
-  const [editingEvent, setEditingEvent] = useState<Partial<ZonaFormValues> | null>(null);
+  const [editingEvent, setEditingEvent] = useState<Partial<MenuFormValues> | null>(null);
   const [metadata, setMetadata] = useState<PaginationInfo>({
     totalPages: 0,
     totalElementsPage: 0,
@@ -125,7 +126,7 @@ function GestionMenu() {
       </div>
       <div className="form-container-zona">
         <div className="zona-alert-cntainer">
-          <ZonaForm
+          <MenuForm
             initialValues={editingEvent || undefined}
             onSubmit={editingEvent ? handlerEdit : handlerCreate}
             onClose={() => { setModalOpen(false); setEditingEvent(null); }}
