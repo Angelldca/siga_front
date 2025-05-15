@@ -38,3 +38,12 @@
     background-color: #c7d2fe;
     color: #312e81;
 }
+.form-froup-last-child{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+   }
+   
+   .form-froup-last-child input{
+       width: 20px;
+   }

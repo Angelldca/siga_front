@@ -5,14 +5,14 @@ export const filtroMenu: FilterType = {
       {
         name: "criterio_1",
         values: [{
-          value: "Nombre",
-          key: "nombre"
-        }]
-      },{
-        name: "criterio_2",
-        values: [{
           value: "Evento",
           key: "evento.nombre"
+        }]
+      }, {
+        name: "criterio_2",
+        values: [{
+          value: "Fecha",
+          key: "fecha"
         }]
       }
     ]
@@ -37,6 +37,10 @@ export const filtroMenu: FilterType = {
         value: "cantidad de platos",
         type: "Text",
          key: "menu.platos.length"
+      },{
+        value: "fecha",
+        type: "Text",
+         key: "fecha"
       },
       {
         value: "Disponible",

@@ -21,7 +21,7 @@ import DeleteAlert from "../../components/delete_alert/deleteAlert";
 import { useModuleCrud } from "../../hooks/useModuleCrud";
 import FooterTable from "../../components/footer-table/foter-table";
 import { PaginationInfo } from "../../utils/interfaces";
-import ZonaForm, { ZonaFormValues } from "../../components/zona_form/zona_form";
+
 import MenuForm, { MenuFormValues } from "../../components/menuForm/MenuForm";
 
 
@@ -33,7 +33,7 @@ function GestionMenu() {
     setAlert, isDelete, setModalOpen, setIsDelete, handleFilter, data, setData, dataFilter, createModule,
     setIsDetail} = useModuleCrud({
         url:"/api/menu-evento", module:"Menu",keySearchBusiness:"evento.empresa.id",
-        byBusiness:true, byDelete:false,list:true});
+        byBusiness:true, byDelete:true,list:true});
   const { handlerCreate, handlerEdit, setSelectedIds, result: resultZonaEvento,alert:alertZonaEvento,
     setAlert:setalertZonaEvento } = useModuleCrud({
       url:"/api/menu", module:"Menu",byBusiness:false,byDelete:false,list:false});
